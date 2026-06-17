@@ -29,14 +29,17 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(to right, rgba(13,21,32,0.72) 38%, rgba(13,21,32,0.08) 100%),
-        linear-gradient(160deg, #0d1520 0%, #1a2a3a 40%, #2b3a4a 70%, #1a2030 100%);
+      background-image: url('/images/hero-aviao.PNG');
       background-size: cover;
       background-position: center right;
       z-index: 0;
     }
-    /* Para inserir imagem real: adicione background-image: url('aviao.jpg'); no .hero-bg */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(13,21,32,0.78) 35%, rgba(13,21,32,0.08) 100%);
+    }
 
     /* NAVBAR */
     .navbar {
@@ -91,7 +94,7 @@
       color: #fff;
     }
 
-    /* Flags */
+    /* Flags desktop */
     .flags {
       display: flex;
       align-items: center;
@@ -108,7 +111,7 @@
     }
     .flag:hover { opacity: 1; }
 
-    /* Flags inline no nav mobile — ocultas no desktop */
+    /* Flags inline no nav mobile */
     .flags-nav-mobile {
       display: none;
       align-items: center;
@@ -137,6 +140,30 @@
       background: #fff;
       border-radius: 2px;
     }
+
+    /* Mobile menu dropdown */
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 73px;
+      left: 0; right: 0;
+      background: rgba(13,21,32,0.97);
+      z-index: 20;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; }
+    .mobile-menu ul li a {
+      display: block;
+      color: rgba(255,255,255,0.80);
+      text-decoration: none;
+      font-size: 16px;
+      padding: 14px 28px;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+    .mobile-menu ul li a:hover { color: #fff; }
 
     /* HERO CONTENT */
     .hero-content {
@@ -175,7 +202,7 @@
       margin-bottom: 36px;
     }
 
-    /* CTA — glassmorphism */
+    /* CTA glassmorphism */
     .cta {
       display: inline-flex;
       align-items: center;
@@ -197,7 +224,6 @@
       background: rgba(255,255,255,0.20);
       border-color: rgba(255,255,255,0.42);
     }
-
     .cta-arrow {
       display: flex;
       align-items: center;
@@ -211,9 +237,7 @@
       flex-shrink: 0;
       transition: background 0.2s;
     }
-    .cta:hover .cta-arrow {
-      background: rgba(255,255,255,0.28);
-    }
+    .cta:hover .cta-arrow { background: rgba(255,255,255,0.28); }
     .cta-arrow svg { width: 16px; height: 16px; }
 
     /* MOBILE */
@@ -221,48 +245,19 @@
       .hero { min-height: 100svh; }
 
       .hero-bg {
-        background:
-          linear-gradient(to bottom, rgba(13,21,32,0.55) 0%, rgba(13,21,32,0.10) 50%, rgba(13,21,32,0.60) 100%),
-          linear-gradient(160deg, #0d1520 0%, #1a2a3a 40%, #2b3a4a 70%, #1a2030 100%);
+        background-image: url('/images/hero-mobile.PNG');
+        background-position: center center;
+      }
+      .hero-bg::after {
+        background: linear-gradient(to bottom, rgba(13,21,32,0.50) 0%, rgba(13,21,32,0.08) 50%, rgba(13,21,32,0.55) 100%);
       }
 
       .navbar { padding: 16px 20px; }
-
-      /* Desktop nav e flags somem */
       .nav-links { display: none; }
       .flags { display: none; }
-
-      /* Flags inline aparecem no mobile */
       .flags-nav-mobile { display: flex; }
-
-      /* Hamburger aparece */
       .hamburger { display: flex; }
 
-      /* Mobile menu drawer */
-      .mobile-menu {
-        display: none;
-        position: absolute;
-        top: 73px;
-        left: 0; right: 0;
-        background: rgba(13,21,32,0.97);
-        z-index: 20;
-        padding: 20px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-      }
-      .mobile-menu.open { display: block; }
-      .mobile-menu ul { list-style: none; display: flex; flex-direction: column; }
-      .mobile-menu ul li a {
-        display: block;
-        color: rgba(255,255,255,0.80);
-        text-decoration: none;
-        font-size: 16px;
-        padding: 14px 28px;
-        letter-spacing: 0.02em;
-        transition: color 0.15s;
-      }
-      .mobile-menu ul li a:hover { color: #fff; }
-
-      /* Hero content mobile — centralizado */
       .hero-content {
         padding: 44px 24px 40px;
         max-width: 100%;
@@ -282,7 +277,7 @@
   <div class="hero-bg"></div>
 
   <nav class="navbar">
-    <!-- Logo -->
+    <!-- Logo — substitua pelo arquivo real -->
     <a href="#" class="logo">
       <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 8 L12 30 L20 14 L28 30 L36 8" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -314,7 +309,7 @@
       </div>
     </div>
 
-    <!-- Flags mobile — inline no nav -->
+    <!-- Flags mobile inline no nav -->
     <div class="flags-nav-mobile">
       <div class="flag" title="Português">
         <svg viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="20" fill="#009C3B"/><polygon points="14,2 26,10 14,18 2,10" fill="#FEDF00"/><circle cx="14" cy="10" r="5" fill="#002776"/></svg>

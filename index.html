@@ -1,0 +1,2349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover"/>
+<title>VOWE Air Mobility – Mobilidade Aérea Inteligente</title>
+<meta name="description" content="Soluções completas e personalizadas para aviação executiva: voos sob demanda, pacotes pré-pagos e clube de voo por assinatura."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#05080f;
+  --navy2:#080d18;
+  --navy3:#0d1525;
+  --gold:#C9A84C;
+  --gold-light:#e2c06d;
+  --gold-dim:rgba(201,168,76,0.18);
+  --white:#f5f7ff;
+  --gray:#8b95aa;
+  --glass:rgba(255,255,255,0.055);
+  --glass-border:rgba(255,255,255,0.09);
+  --glass-strong:rgba(255,255,255,0.08);
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-main:'Raleway',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+*{-webkit-tap-highlight-color:transparent}
+body{
+  font-family:var(--font-main);
+  background:var(--navy);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-text-size-adjust:100%;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--navy)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ─── NOISE OVERLAY ─── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.5;
+}
+
+/* ─── TOPBAR ─── */
+#topbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:72px;
+  background:rgba(5,8,15,0.82);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--glass-border);
+  transition:background .3s;
+}
+#topbar.scrolled{background:rgba(5,8,15,0.97)}
+
+.logo{
+  font-family:var(--font-main);
+  font-weight:800;font-size:1.4rem;
+  letter-spacing:.12em;color:var(--white);
+  cursor:pointer;text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.logo span{color:var(--gold)}
+
+nav{display:flex;align-items:center;gap:2rem}
+nav a{
+  font-size:.78rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gray);
+  text-decoration:none;cursor:pointer;
+  transition:color .2s;padding:8px 2px;
+  border-bottom:2px solid transparent;
+  min-height:44px;display:inline-flex;align-items:center;
+}
+nav a:hover,nav a.active{color:var(--white);border-bottom-color:var(--gold)}
+
+.nav-cta{
+  background:var(--gold);color:var(--navy)!important;
+  border-bottom:none!important;
+  padding:9px 20px!important;border-radius:4px;
+  font-weight:700!important;font-size:.72rem!important;
+  letter-spacing:.1em;transition:background .2s, transform .15s!important;
+}
+.nav-cta:hover{background:var(--gold-light)!important;transform:translateY(-1px)}
+
+/* ─── LANGUAGE SWITCHER ─── */
+.lang-switch{display:flex;align-items:center;gap:6px;margin-left:1rem}
+.lang-btn{
+  background:none;border:1px solid var(--glass-border);
+  border-radius:4px;padding:4px 8px;
+  cursor:pointer;font-size:.7rem;font-weight:600;
+  font-family:var(--font-main);
+  color:var(--gray);letter-spacing:.06em;
+  display:flex;align-items:center;gap:5px;
+  transition:all .2s;
+}
+.lang-btn:hover,.lang-btn.active{
+  border-color:var(--gold);color:var(--gold);
+}
+.flag{font-size:.9rem;line-height:1}
+
+/* ─── HAMBURGER ─── */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+.mobile-menu{
+  display:none;position:fixed;top:72px;left:0;right:0;
+  background:rgba(5,8,15,.98);backdrop-filter:blur(20px);
+  z-index:999;padding:1.5rem 5%;
+  flex-direction:column;gap:.5rem;
+  border-bottom:1px solid var(--glass-border);
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{
+  font-size:.85rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--gray);
+  text-decoration:none;padding:15px 0;
+  border-bottom:1px solid var(--glass-border);
+  cursor:pointer;
+  min-height:48px;display:flex;align-items:center;
+}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-lang{display:flex;gap:8px;padding-top:12px}
+
+/* ─── PAGES ─── */
+.page{display:none;min-height:100vh;padding-top:72px}
+.page.active{display:block}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:center;
+  overflow:hidden;
+  padding-top:72px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 65% 50%, rgba(10,20,50,.3) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,.06) 0%, transparent 60%),
+    linear-gradient(135deg, #05080f 0%, #0a1428 50%, #05080f 100%);
+  z-index:1;
+}
+/* Animated subtle lines */
+.hero-bg::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 119px,
+    rgba(255,255,255,.018) 120px
+  );
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 79px,
+    rgba(255,255,255,.012) 80px
+  );
+}
+
+.hero-img{
+  position:absolute;right:-5%;top:50%;transform:translateY(-50%);
+  width:65%;max-width:900px;z-index:2;
+  opacity:.85;
+  filter:drop-shadow(0 0 80px rgba(201,168,76,.15));
+  animation:floatPlane 6s ease-in-out infinite;
+}
+@keyframes floatPlane{
+  0%,100%{transform:translateY(-50%) rotate(-1deg)}
+  50%{transform:translateY(-53%) rotate(0deg)}
+}
+
+.hero-content{
+  position:relative;z-index:3;
+  padding:0 5% 0;max-width:620px;
+  width:100%;
+  padding-top:clamp(60px, 14vh, 120px);
+}
+.hero-eyebrow{
+  font-size:.6rem;font-weight:700;letter-spacing:.25em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:1rem;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:600;line-height:1.1;
+  color:var(--white);margin-bottom:1rem;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:.82rem;font-weight:400;line-height:1.7;
+  color:rgba(245,247,255,.6);margin-bottom:1.5rem;
+  max-width:480px;
+}
+.btn-gold{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--gold);color:var(--navy);
+  font-family:var(--font-main);font-size:.72rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:12px 24px;border-radius:4px;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:background .2s,transform .2s,box-shadow .2s;
+  box-shadow:0 6px 24px rgba(201,168,76,.22);
+}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,.35)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  background:transparent;color:var(--white);
+  font-family:var(--font-main);font-size:.72rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:11px 24px;border-radius:4px;
+  border:1px solid rgba(255,255,255,.2);
+  text-decoration:none;cursor:pointer;
+  transition:all .2s;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+
+.hero-stats{
+  display:flex;flex-direction:column;gap:.6rem;margin-top:2rem;
+  padding-top:1.5rem;border-top:1px solid var(--glass-border);
+}
+.stat-item{display:flex;align-items:baseline;gap:10px}
+.stat-num{
+  font-family:'Raleway',sans-serif;
+  font-size:1.25rem;font-weight:800;
+  color:var(--gold);line-height:1;
+  letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums;
+}
+.stat-label{
+  font-family:'Raleway',sans-serif;
+  font-size:.58rem;font-weight:600;
+  letter-spacing:.14em;color:var(--gray);
+  text-transform:uppercase;
+}
+
+/* ─── SECTION COMMON ─── */
+section{padding:100px 5%}
+.section-eyebrow{
+  font-size:.62rem;font-weight:700;letter-spacing:.25em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:1rem;
+  display:flex;align-items:center;gap:10px;
+}
+.section-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+h2.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,3.5vw,3rem);
+  font-weight:700;line-height:1.2;color:var(--white);
+  margin-bottom:1.2rem;
+}
+h2.section-title em{font-style:italic;color:var(--gold)}
+.section-lead{
+  font-size:.92rem;line-height:1.8;color:rgba(245,247,255,.6);
+  max-width:640px;
+}
+
+/* ─── GLASS CARD ─── */
+.glass-card{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:2rem;
+  position:relative;overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.glass-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+}
+.glass-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+
+/* ─── DIFERENCIAIS GRID ─── */
+.diferenciais-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1.5rem;margin-top:3.5rem;
+}
+.dif-card{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:12px;padding:1.75rem;
+  position:relative;overflow:hidden;
+  transition:all .25s;
+}
+.dif-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);
+}
+.dif-card:hover{
+  border-color:rgba(201,168,76,.25);
+  background:rgba(255,255,255,.07);
+  transform:translateY(-3px);
+}
+.dif-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1rem;
+}
+.dif-icon svg{width:18px;height:18px;color:var(--gold);stroke:var(--gold)}
+.dif-title{font-size:.8rem;font-weight:700;letter-spacing:.05em;color:var(--white);margin-bottom:.5rem}
+.dif-desc{font-size:.75rem;line-height:1.7;color:var(--gray)}
+
+/* ─── PROGRAMAS ─── */
+.programas-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:2rem;margin-top:3.5rem;
+}
+.programa-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--glass-border);
+  border-radius:20px;padding:2.5rem;
+  position:relative;overflow:hidden;
+  transition:all .3s;
+  display:flex;flex-direction:column;gap:1.2rem;
+}
+.programa-card.featured{
+  background:linear-gradient(135deg, rgba(201,168,76,.12) 0%, rgba(201,168,76,.04) 100%);
+  border-color:rgba(201,168,76,.35);
+}
+.programa-card.featured::after{
+  content:'MAIS POPULAR';
+  position:absolute;top:16px;right:-28px;
+  background:var(--gold);color:var(--navy);
+  font-size:.55rem;font-weight:800;letter-spacing:.15em;
+  padding:5px 40px;transform:rotate(45deg);
+}
+.programa-card:hover{transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.5)}
+.prog-badge{
+  display:inline-flex;align-items:center;
+  background:var(--gold-dim);border:1px solid rgba(201,168,76,.3);
+  border-radius:6px;padding:5px 12px;
+  font-size:.62rem;font-weight:700;letter-spacing:.12em;
+  color:var(--gold);text-transform:uppercase;width:fit-content;
+}
+.prog-title{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--white)}
+.prog-desc{font-size:.8rem;line-height:1.75;color:var(--gray)}
+.prog-features{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-top:.5rem}
+.prog-features li{
+  font-size:.78rem;color:rgba(245,247,255,.75);
+  display:flex;align-items:flex-start;gap:10px;
+}
+.prog-features li::before{
+  content:'✦';color:var(--gold);font-size:.6rem;margin-top:3px;flex-shrink:0;
+}
+.prog-cta{
+  margin-top:auto;display:inline-flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--gold);
+  text-transform:uppercase;cursor:pointer;text-decoration:none;
+  border:none;background:none;font-family:var(--font-main);
+  transition:gap .2s;
+}
+.prog-cta:hover{gap:14px}
+
+/* ─── PARA QUEM ─── */
+.pra-quem-list{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;margin-top:2.5rem;
+}
+.pq-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:1.2rem 1.5rem;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:10px;font-size:.8rem;line-height:1.65;color:rgba(245,247,255,.7);
+}
+.pq-item::before{content:'→';color:var(--gold);font-size:.9rem;flex-shrink:0;margin-top:1px}
+
+/* ─── APP SECTION ─── */
+.app-section{
+  background:linear-gradient(135deg, var(--navy2) 0%, var(--navy3) 100%);
+  border-top:1px solid var(--glass-border);
+  border-bottom:1px solid var(--glass-border);
+}
+.app-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+}
+.app-btns{display:flex;flex-direction:column;gap:1rem;margin-top:2rem;max-width:280px}
+.store-btn{
+  display:flex;align-items:center;gap:14px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:12px;padding:14px 20px;
+  text-decoration:none;color:var(--white);
+  transition:all .2s;
+}
+.store-btn:hover{border-color:rgba(201,168,76,.4);background:rgba(255,255,255,.08)}
+.store-btn-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px}
+.store-btn-icon svg{width:22px;height:22px;color:var(--white);stroke:var(--white)}
+.store-btn-text{display:flex;flex-direction:column;gap:1px}
+.store-btn-sub{font-size:.58rem;color:var(--gray);font-weight:500;letter-spacing:.05em}
+.store-btn-name{font-size:.85rem;font-weight:700}
+.app-mockup{
+  position:relative;display:flex;justify-content:center;
+}
+.app-mockup-img{
+  width:100%;max-width:400px;
+  border-radius:24px;
+  box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px var(--glass-border);
+  background:linear-gradient(135deg,var(--navy3),var(--navy2));
+  aspect-ratio:9/16;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.app-mockup-img::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.06),transparent 60%);
+}
+.app-mockup-screen{
+  width:88%;height:88%;
+  background:linear-gradient(160deg,#0e1a2e,#050810);
+  border-radius:18px;border:1px solid var(--glass-border);
+  display:flex;flex-direction:column;
+  padding:1.5rem;gap:1rem;position:relative;z-index:1;
+}
+.mock-header{display:flex;justify-content:space-between;align-items:center}
+.mock-logo{font-weight:800;font-size:.75rem;letter-spacing:.1em;color:var(--gold)}
+.mock-notch{width:60px;height:6px;background:rgba(255,255,255,.08);border-radius:3px}
+.mock-balance{
+  background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));
+  border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:1rem;
+}
+.mock-bal-label{font-size:.55rem;color:var(--gray);letter-spacing:.1em;margin-bottom:4px}
+.mock-bal-val{font-size:1.1rem;font-weight:800;color:var(--gold)}
+.mock-bal-sub{font-size:.6rem;color:var(--gray);margin-top:4px}
+.mock-flights{display:flex;flex-direction:column;gap:.5rem}
+.mock-flight{
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:8px;padding:.7rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mock-flight-route{font-size:.65rem;font-weight:700;color:var(--white)}
+.mock-flight-date{font-size:.55rem;color:var(--gray)}
+.mock-flight-status{
+  font-size:.5rem;font-weight:700;letter-spacing:.08em;
+  background:rgba(201,168,76,.15);color:var(--gold);
+  border-radius:4px;padding:3px 6px;
+}
+.mock-nav{
+  margin-top:auto;display:flex;justify-content:space-around;
+  padding:10px 0;border-top:1px solid var(--glass-border);
+}
+.mock-nav-item{
+  font-size:.5rem;color:var(--gray);text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+}
+.mock-nav-item.active{color:var(--gold)}
+.mock-nav-icon{display:flex;justify-content:center}
+.mock-nav-icon svg{width:14px;height:14px;stroke:currentColor}
+
+/* ─── SOBRE PAGE ─── */
+.sobre-hero{
+  background:linear-gradient(to bottom, var(--navy2), var(--navy));
+  padding:160px 5% 100px;text-align:center;
+}
+.numbers-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:var(--glass-border);
+  border:1px solid var(--glass-border);border-radius:16px;
+  overflow:hidden;margin:4rem 0;
+}
+.num-cell{
+  background:var(--navy);text-align:center;
+  padding:2.5rem 2rem;
+}
+.num-big{
+  font-size:clamp(2.5rem,5vw,4rem);font-weight:900;
+  color:var(--gold);line-height:1;display:block;
+}
+.num-label{
+  font-size:.65rem;font-weight:600;letter-spacing:.15em;
+  color:var(--gray);text-transform:uppercase;margin-top:.5rem;display:block;
+}
+.two-col{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;
+}
+.two-col.reverse{direction:rtl}
+.two-col.reverse > *{direction:ltr}
+.content-block h3{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:700;
+  color:var(--white);margin-bottom:1rem;
+}
+.content-block p{font-size:.85rem;line-height:1.85;color:var(--gray);margin-bottom:1rem}
+.content-block p strong{color:var(--white)}
+.img-placeholder{
+  border-radius:16px;overflow:hidden;
+  background:linear-gradient(135deg,var(--navy3),var(--navy2));
+  border:1px solid var(--glass-border);
+  aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.img-placeholder::after{
+  content:'DA62';
+  font-family:var(--font-display);
+  font-size:4rem;font-weight:700;
+  color:rgba(201,168,76,.12);letter-spacing:.1em;
+}
+.benefit-list{list-style:none;display:flex;flex-direction:column;gap:.8rem}
+.benefit-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:.8rem;line-height:1.6;color:rgba(245,247,255,.75);
+}
+.benefit-list li::before{content:'✦';color:var(--gold);font-size:.6rem;margin-top:3px;flex-shrink:0}
+
+/* ─── FROTA ─── */
+.specs-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  margin:3rem 0;
+}
+@media(max-width:640px){.specs-grid{grid-template-columns:repeat(2,1fr)}}
+.spec-card{
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:12px;padding:1.5rem;text-align:center;
+}
+.spec-icon{margin-bottom:.75rem;display:flex;justify-content:center}
+.spec-icon svg{width:24px;height:24px;color:var(--gold);stroke:var(--gold)}
+.spec-label{font-size:.62rem;font-weight:600;letter-spacing:.12em;color:var(--gray);text-transform:uppercase;margin-bottom:.4rem}
+.spec-value{font-size:1.1rem;font-weight:800;color:var(--white)}
+.spec-unit{font-size:.7rem;color:var(--gray);margin-top:2px}
+
+.testimonial-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3rem;
+}
+.testimonial-card{
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:14px;padding:2rem;
+}
+.testimonial-quote{
+  font-family:var(--font-display);font-size:1rem;
+  font-style:italic;line-height:1.7;color:rgba(245,247,255,.85);
+  margin-bottom:1.2rem;
+}
+.testimonial-author{font-size:.72rem;font-weight:700;color:var(--gold);letter-spacing:.05em}
+.testimonial-role{font-size:.65rem;color:var(--gray);margin-top:2px}
+
+/* ─── PROGRAMAS PAGE ─── */
+.prog-page-hero{
+  background:linear-gradient(to bottom,var(--navy2),var(--navy));
+  padding:160px 5% 80px;text-align:center;
+}
+.prog-tabs{
+  display:flex;gap:.5rem;justify-content:center;margin-top:3rem;flex-wrap:wrap;
+}
+.prog-tab{
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:8px;padding:10px 22px;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gray);cursor:pointer;font-family:var(--font-main);
+  transition:all .2s;
+}
+.prog-tab:hover{color:var(--white);border-color:rgba(255,255,255,.2)}
+.prog-tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+.comparativo{width:100%;overflow-x:auto;margin-top:3rem}
+.comp-table{
+  width:100%;border-collapse:collapse;min-width:700px;
+}
+.comp-table th{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:1rem 1.2rem;text-align:center;
+  border-bottom:2px solid var(--glass-border);
+  color:var(--gold);
+}
+.comp-table th:first-child{text-align:left;color:var(--gray)}
+.comp-table td{
+  font-size:.75rem;padding:.85rem 1.2rem;
+  border-bottom:1px solid var(--glass-border);
+  color:rgba(245,247,255,.7);text-align:center;
+}
+.comp-table td:first-child{text-align:left;font-weight:600;color:var(--white)}
+.comp-table tr:hover td{background:rgba(255,255,255,.025)}
+.check{color:#4ade80;font-size:.9rem}
+.cross{color:rgba(255,255,255,.2);font-size:.9rem}
+.highlight-col{background:rgba(201,168,76,.04)}
+
+.horas-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;
+}
+@media(max-width:640px){.horas-grid{grid-template-columns:1fr}}
+.hora-card{
+  border-radius:16px;padding:2rem;text-align:center;
+  position:relative;overflow:hidden;transition:all .3s;
+}
+.hora-card.gold-tier{
+  background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));
+  border:1px solid rgba(201,168,76,.35);
+}
+.hora-card.platinum-tier{
+  background:linear-gradient(135deg,rgba(180,180,200,.12),rgba(180,180,200,.04));
+  border:1px solid rgba(180,180,200,.3);
+}
+.hora-card.diamond-tier{
+  background:linear-gradient(135deg,rgba(100,160,255,.1),rgba(100,160,255,.03));
+  border:1px solid rgba(100,160,255,.25);
+}
+.hora-card:hover{transform:translateY(-4px)}
+.hora-tier{font-size:.62rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem}
+.hora-card.gold-tier .hora-tier{color:var(--gold)}
+.hora-card.platinum-tier .hora-tier{color:#c0c0d0}
+.hora-card.diamond-tier .hora-tier{color:#64a0ff}
+.hora-num{font-size:3.5rem;font-weight:900;line-height:1}
+.hora-unit{font-size:.75rem;color:var(--gray);margin-top:.3rem}
+.hora-desc{font-size:.75rem;line-height:1.6;color:var(--gray);margin-top:1rem}
+
+/* ─── CONTATO PAGE ─── */
+.contato-hero{
+  background:linear-gradient(to bottom,var(--navy2),var(--navy));
+  padding:160px 5% 80px;text-align:center;
+}
+.contato-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
+  margin-top:0;padding-top:0;
+}
+.contact-cards{display:flex;flex-direction:column;gap:1.2rem}
+.contact-card{
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:14px;padding:1.5rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;
+  text-decoration:none;color:var(--white);
+  transition:all .2s;
+}
+.contact-card:hover{border-color:rgba(201,168,76,.3);transform:translateX(4px)}
+.contact-card-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.contact-card-icon svg{width:20px;height:20px;stroke:var(--gold);color:var(--gold)}
+.contact-card-label{font-size:.6rem;font-weight:600;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
+.contact-card-val{font-size:.9rem;font-weight:600}
+.contact-form{
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:20px;padding:2.5rem;
+}
+.form-title{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:1.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
+.form-group label{font-size:.65rem;font-weight:600;letter-spacing:.1em;color:var(--gray);text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--glass-border);
+  border-radius:8px;padding:12px 14px;
+  color:var(--white);font-family:var(--font-main);font-size:.82rem;
+  outline:none;transition:border-color .2s;
+  -webkit-appearance:none;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  border-color:rgba(201,168,76,.4);
+}
+.form-group textarea{resize:vertical;min-height:90px;min-height:max(90px,20vw)}
+.form-group select option{background:var(--navy3);color:var(--white)}
+
+/* ─── NEWSLETTER ─── */
+.newsletter-section{
+  background:var(--navy2);border-top:1px solid var(--glass-border);
+  padding:80px 5%;text-align:center;
+}
+.newsletter-inner{max-width:500px;margin:0 auto}
+.newsletter-inner h3{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:700;
+  color:var(--white);margin-bottom:.75rem;
+}
+.newsletter-inner p{font-size:.82rem;line-height:1.7;color:var(--gray);margin-bottom:2rem}
+.newsletter-form{display:flex;flex-direction:column;gap:.75rem;align-items:center;max-width:440px;margin:0 auto}
+.newsletter-form input{
+  width:100%;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:8px;padding:13px 16px;
+  color:var(--white);font-family:var(--font-main);font-size:.82rem;outline:none;
+}
+.newsletter-form input:focus{border-color:rgba(201,168,76,.4)}
+.newsletter-form .btn-gold{width:100%;justify-content:center}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--navy);border-top:1px solid var(--glass-border);
+  padding:60px 5% 30px;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;
+}
+.footer-brand h4{
+  font-weight:800;font-size:1.1rem;letter-spacing:.12em;
+  color:var(--white);margin-bottom:.75rem;
+}
+.footer-brand h4 span{color:var(--gold)}
+.footer-brand p{font-size:.75rem;line-height:1.75;color:var(--gray);margin-bottom:1rem}
+.footer-social{display:flex;gap:.75rem}
+.social-btn{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;text-decoration:none;color:var(--gray);
+  transition:all .2s;cursor:pointer;
+}
+.social-btn:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+.footer-col h5{font-size:.65rem;font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col ul li a{
+  font-size:.75rem;color:var(--gray);text-decoration:none;cursor:pointer;
+  transition:color .2s;
+}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-bottom{
+  padding-top:2rem;border-top:1px solid var(--glass-border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.footer-bottom p{font-size:.65rem;color:rgba(139,149,170,.5);line-height:1.5}
+.footer-cert{
+  font-size:.6rem;color:rgba(139,149,170,.45);text-align:right;
+}
+
+/* ─── DIVIDER ─── */
+.gold-divider{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  margin:1.5rem 0;
+}
+.center-divider{margin:1.5rem auto}
+
+/* ─── SECTION WITH BG ─── */
+.section-dark{background:var(--navy2)}
+.section-alt{background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%)}
+
+/* ─── FLOAT BADGE ─── */
+.float-badge{
+  position:absolute;
+  background:rgba(5,8,15,.85);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);
+  border-radius:12px;padding:.9rem 1.2rem;
+  display:flex;align-items:center;gap:10px;
+  min-width:180px;
+}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+.badge-text{font-size:.65rem;font-weight:600;color:var(--white)}
+.badge-sub{font-size:.55rem;color:var(--gray)}
+
+/* ─── TRANSITIONS ─── */
+.page{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── RESPONSIVE ─── */
+/* ═══════════════════════════════════════
+   RESPONSIVE — TABLET ≤ 900px
+═══════════════════════════════════════ */
+@media(max-width:900px){
+
+  /* NAV */
+  nav{display:none}
+  .lang-switch{display:none}
+  .hamburger{display:flex}
+
+  /* TOPBAR */
+  #topbar{padding:0 4%}
+  .logo{font-size:1.1rem}
+
+  /* HERO */
+  .hero{min-height:100svh;padding-bottom:40px;align-items:center}
+  .hero-img{
+    position:absolute;
+    width:120%;right:-20%;
+    top:0;transform:none;
+    opacity:.12;
+    height:60%;
+    object-fit:cover;
+  }
+  .hero-content{
+    max-width:100%;
+    padding:0 4%;
+    padding-bottom:2rem;
+    position:relative;z-index:3;
+  }
+  .hero h1{font-size:clamp(2rem,8vw,3rem)}
+  .hero-sub{font-size:.85rem}
+  .hero-btns{flex-direction:column;gap:10px}
+  .hero-btns .btn-gold,.hero-btns .btn-ghost{width:100%;justify-content:center}
+  .hero-stats{
+    gap:1.2rem;flex-wrap:wrap;
+    padding-top:1.5rem;margin-top:1.5rem;
+  }
+  .stat-num{font-size:1.3rem}
+
+  /* SECTIONS */
+  section{padding:70px 4%}
+  .sobre-hero,.prog-page-hero,.contato-hero{padding:130px 4% 60px}
+
+  /* GRIDS */
+  .two-col{grid-template-columns:1fr;gap:2.5rem}
+  .two-col.reverse{direction:ltr}
+  .two-col.reverse > *{direction:ltr}
+  .contato-grid{grid-template-columns:1fr;gap:2.5rem}
+  .app-inner{grid-template-columns:1fr;gap:2.5rem}
+  .app-mockup{display:none}
+  .numbers-strip{grid-template-columns:1fr;gap:0}
+  .horas-grid{grid-template-columns:1fr;gap:1.2rem}
+  .form-row{grid-template-columns:1fr}
+  .diferenciais-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+  .programas-grid{grid-template-columns:1fr;gap:1.5rem}
+  .specs-grid{grid-template-columns:repeat(3,1fr);gap:1rem}
+  .testimonial-grid{grid-template-columns:1fr}
+  .pra-quem-list{grid-template-columns:1fr}
+
+  /* FOOTER */
+  .footer-grid{grid-template-columns:1fr 1fr;gap:2rem}
+
+  /* COMPARATIVO */
+  .comparativo{font-size:.7rem}
+  .comp-table th,.comp-table td{padding:.6rem .8rem}
+
+  /* PROG TABS */
+  .prog-tabs{gap:.4rem}
+  .prog-tab{padding:8px 14px;font-size:.65rem}
+
+  /* NEWSLETTER */
+  .newsletter-form{flex-direction:column;align-items:stretch}
+  .newsletter-form input{min-width:unset;width:100%}
+
+  /* STORE BTNS */
+  .app-btns{flex-direction:row;flex-wrap:wrap;max-width:100%}
+  .store-btn{flex:1;min-width:140px}
+
+  /* CONTACT FORM */
+  .contact-form{padding:1.5rem}
+
+  /* HERO EYEBROW */
+  .hero-eyebrow{font-size:.6rem}
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — MOBILE ≤ 480px
+═══════════════════════════════════════ */
+@media(max-width:480px){
+
+  /* HERO */
+  .hero{min-height:100svh;padding-bottom:40px}
+  .hero-content{padding-top:clamp(40px,10vh,80px)}
+  .hero h1{font-size:1.9rem;line-height:1.15}
+  .hero-sub{font-size:.8rem}
+  .hero-stats{flex-direction:column;gap:.8rem;padding-top:1.2rem;margin-top:1.2rem}
+  .stat-item{flex-direction:row;align-items:baseline;gap:.5rem}
+  .stat-num{font-size:1.2rem}
+  .stat-label{font-size:.6rem}
+
+  /* NAV LOGO */
+  .logo{font-size:1rem}
+  .logo span:last-child{display:none}
+
+  /* SECTIONS */
+  section{padding:56px 4%}
+  .sobre-hero,.prog-page-hero,.contato-hero{padding:110px 4% 48px}
+
+  /* TYPOGRAPHY */
+  h2.section-title{font-size:1.5rem}
+  .section-lead{font-size:.82rem}
+  .section-eyebrow{font-size:.58rem}
+
+  /* GRIDS */
+  .diferenciais-grid{grid-template-columns:1fr;gap:.85rem}
+  .specs-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+  .footer-grid{grid-template-columns:1fr}
+  .pq-item{font-size:.78rem}
+
+  /* PROGRAMA CARDS */
+  .programa-card{padding:1.75rem 1.25rem}
+  .programa-card.featured::after{display:none}
+  .prog-title{font-size:1.3rem}
+
+  /* HORAS */
+  .hora-card{padding:1.5rem 1rem}
+  .hora-num{font-size:2.8rem}
+
+  /* COMPARATIVO */
+  .comparativo{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .comp-table{min-width:560px;font-size:.65rem}
+  .comp-table th,.comp-table td{padding:.5rem .6rem}
+
+  /* CONTACT */
+  .contact-card{padding:1.2rem 1.2rem}
+  .contact-card-val{font-size:.8rem}
+  .contact-form{padding:1.2rem}
+  .form-title{font-size:1.1rem}
+
+  /* GLASS CARD */
+  .glass-card{padding:1.5rem}
+
+  /* STORE BTNS */
+  .app-btns{flex-direction:column;gap:.75rem}
+  .store-btn{width:100%}
+
+  /* FOOTER */
+  .footer-grid{gap:1.5rem}
+  .footer-col ul li a{font-size:.72rem}
+  .footer-bottom{flex-direction:column;gap:.5rem}
+  .footer-cert{text-align:left}
+
+  /* PROG TABS */
+  .prog-tabs{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;gap:.4rem}
+  .prog-tab{flex:1;min-width:calc(50% - .2rem);text-align:center;padding:9px 8px;font-size:.6rem}
+
+  /* NUMBERS STRIP */
+  .num-big{font-size:2.5rem}
+
+  /* NEWSLETTER */
+  .newsletter-inner h3{font-size:1.3rem}
+
+  /* BTN SIZES */
+  .btn-gold,.btn-ghost{font-size:.7rem;padding:12px 20px}
+
+  /* MOBILE MENU */
+  .mobile-menu{padding:1rem 4%}
+
+  /* LANG SWITCH MOBILE */
+  .mobile-lang{flex-wrap:wrap;gap:6px}
+  .lang-btn{font-size:.65rem;padding:4px 6px}
+
+  /* DIFFS */
+  .dif-card{padding:1.25rem}
+  .dif-title{font-size:.78rem}
+
+  /* SPEC CARDS */
+  .spec-card{padding:1.1rem .8rem}
+  .spec-value{font-size:.95rem}
+
+  /* TWO COL GAPS */
+  .two-col{gap:2rem}
+  .content-block h3{font-size:1.3rem}
+  .content-block p{font-size:.8rem}
+
+  /* IMG PLACEHOLDER */
+  .img-placeholder{aspect-ratio:16/9}
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — SMALL ≤ 360px
+═══════════════════════════════════════ */
+@media(max-width:360px){
+  .hero h1{font-size:1.65rem}
+  .programas-grid,.diferenciais-grid{gap:.7rem}
+  .prog-tab{font-size:.55rem;padding:7px 6px}
+  section{padding:48px 3.5%}
+  #topbar{padding:0 3.5%}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header id="topbar">
+  <a class="logo" onclick="showPage('home')">
+    VOW<span>E</span> <span style="font-size:.6em;font-weight:300;color:var(--gray);letter-spacing:.05em">AIR MOBILITY</span>
+  </a>
+  <nav id="main-nav">
+    <a onclick="showPage('home')" class="active" data-page="home" data-i18n="nav.home">Home</a>
+    <a onclick="showPage('sobre')" data-page="sobre" data-i18n="nav.sobre">Sobre</a>
+    <a onclick="showPage('programas')" data-page="programas" data-i18n="nav.programas">Programas</a>
+    <a onclick="showPage('frota')" data-page="frota" data-i18n="nav.frota">Frota</a>
+    <a onclick="showPage('contato')" data-page="contato" data-i18n="nav.contato">Contato</a>
+    <a href="https://api.whatsapp.com/send?phone=5531998342508&text=Ol%C3%A1!%20Eu%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20VOWE." class="nav-cta" target="_blank" data-i18n="nav.cta">Torne-se Membro</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:.75rem">
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><span class="flag">🇧🇷</span> PT</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en"><span class="flag">🇺🇸</span> EN</button>
+      <button class="lang-btn" onclick="setLang('es')" id="btn-es"><span class="flag">🇪🇸</span> ES</button>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a onclick="showPage('home');toggleMenu()" data-i18n="nav.home">Home</a>
+  <a onclick="showPage('sobre');toggleMenu()" data-i18n="nav.sobre">Sobre</a>
+  <a onclick="showPage('programas');toggleMenu()" data-i18n="nav.programas">Programas</a>
+  <a onclick="showPage('frota');toggleMenu()" data-i18n="nav.frota">Frota</a>
+  <a onclick="showPage('contato');toggleMenu()" data-i18n="nav.contato">Contato</a>
+  <a href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank" style="color:var(--gold)" data-i18n="nav.cta">Torne-se Membro</a>
+  <div class="mobile-lang">
+    <button class="lang-btn" onclick="setLang('pt')" id="m-btn-pt"><span class="flag">🇧🇷</span> PT</button>
+    <button class="lang-btn" onclick="setLang('en')" id="m-btn-en"><span class="flag">🇺🇸</span> EN</button>
+    <button class="lang-btn" onclick="setLang('es')" id="m-btn-es"><span class="flag">🇪🇸</span> ES</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <!-- SVG Plane silhouette -->
+    <svg class="hero-img" viewBox="0 0 900 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#f5f7ff" stop-opacity="0.08"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Fuselagem principal -->
+      <ellipse cx="440" cy="190" rx="300" ry="38" fill="url(#planeGrad)" stroke="rgba(255,255,255,0.12)" stroke-width="1" filter="url(#glow)"/>
+      <!-- Nariz -->
+      <path d="M740 190 Q840 188 870 192 Q840 196 740 194 Z" fill="rgba(245,247,255,0.15)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+      <!-- Cauda vertical -->
+      <path d="M140 190 L170 120 L210 130 L200 190 Z" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+      <!-- Asa principal esquerda -->
+      <path d="M500 192 L620 340 L700 330 L660 192 Z" fill="url(#planeGrad)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <!-- Asa principal direita -->
+      <path d="M500 188 L620 40 L700 50 L660 188 Z" fill="url(#planeGrad)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <!-- Asa pequena traseira esq -->
+      <path d="M200 193 L240 240 L280 235 L270 193 Z" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"/>
+      <!-- Asa pequena traseira dir -->
+      <path d="M200 187 L240 140 L280 145 L270 187 Z" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"/>
+      <!-- Motor esq -->
+      <ellipse cx="600" cy="310" rx="50" ry="14" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+      <!-- Motor dir -->
+      <ellipse cx="600" cy="70" rx="50" ry="14" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+      <!-- Janelas -->
+      <rect x="520" y="185" width="12" height="8" rx="2" fill="rgba(201,168,76,0.4)"/>
+      <rect x="545" y="185" width="12" height="8" rx="2" fill="rgba(245,247,255,0.2)"/>
+      <rect x="570" y="185" width="12" height="8" rx="2" fill="rgba(245,247,255,0.2)"/>
+      <rect x="595" y="185" width="12" height="8" rx="2" fill="rgba(245,247,255,0.2)"/>
+      <rect x="620" y="185" width="12" height="8" rx="2" fill="rgba(245,247,255,0.15)"/>
+      <rect x="645" y="185" width="12" height="8" rx="2" fill="rgba(245,247,255,0.1)"/>
+      <!-- Glow engines -->
+      <ellipse cx="600" cy="310" rx="8" ry="8" fill="rgba(201,168,76,0.4)" filter="url(#glow)"/>
+      <ellipse cx="600" cy="70" rx="8" ry="8" fill="rgba(201,168,76,0.4)" filter="url(#glow)"/>
+    </svg>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow" data-i18n="hero.eyebrow">Aviação Executiva Premium</div>
+      <h1 data-i18n="hero.h1">Uma <em>nova forma</em><br/>de voar.</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Frota exclusiva Diamond DA62, operação integrada via app e total liberdade de escolha — por assinatura, pacote ou voo avulso.</p>
+      <div class="hero-btns">
+        <a class="btn-gold" href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank" data-i18n="hero.cta1">Torne-se Membro</a>
+        <a class="btn-ghost" onclick="showPage('programas')" data-i18n="hero.cta2">Ver Programas</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num" data-count="3600" data-suffix="+">3.600+</span>
+          <span class="stat-label" data-i18n="hero.stat1">Aeródromos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="0" data-text="DA62">DA62</span>
+          <span class="stat-label" data-i18n="hero.stat2">Frota exclusiva</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="60" data-suffix="%">60%</span>
+          <span class="stat-label" data-i18n="hero.stat3">Menos combustível</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <section>
+    <div class="section-eyebrow" data-i18n="home.dif.eyebrow">Por que a VOWE</div>
+    <h2 class="section-title" data-i18n="home.dif.title">Diferenciais que <em>transformam</em> sua experiência</h2>
+    <p class="section-lead" data-i18n="home.dif.lead">A VOWE foi construída sobre pilares reais de inovação, segurança e praticidade — não promessas vazias.</p>
+    <div class="diferenciais-grid">
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5c-1.5-1.5-3.5-1.5-5 0L11 6 2.8 4.2c-.5-.1-.9.2-1.1.6L1 7c-.3.5-.1 1 .3 1.3L8 11l-2 3H3l-1 1 3 2 2 3 1-1v-3l3-2 3.7 6.7c.3.4.8.6 1.3.3l1.2-.7c.4-.2.7-.6.6-1.1z"/></svg></div><div class="dif-title" data-i18n="dif1.t">Frota Diamond DA62</div><div class="dif-desc" data-i18n="dif1.d">Aeronaves líderes mundiais em segurança, tecnologia e sustentabilidade — vinculadas ao fabricante.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="11" width="14" height="10" rx="2" ry="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="dif-title" data-i18n="dif2.t">Privacidade Total</div><div class="dif-desc" data-i18n="dif2.d">Terminais privativos da aviação executiva. Voe com quem quiser — sócios, família, pets.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="dif-title" data-i18n="dif3.t">100% via App</div><div class="dif-desc" data-i18n="dif3.d">Agende voos, acompanhe operações e gerencie saldo em tempo real pelo aplicativo VOWE.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="dif-title" data-i18n="dif4.t">Previsibilidade de Custos</div><div class="dif-desc" data-i18n="dif4.d">Todos os custos fixos e variáveis são conhecidos antecipadamente. Sem surpresas, sem flutuações.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div class="dif-title" data-i18n="dif5.t">Segurança RBAC 135</div><div class="dif-desc" data-i18n="dif5.d">Toda operação certificada pela ANAC. Equipe treinada pelo fabricante e menor índice de acidentes da categoria.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M2 22c4-4 7-9.5 7-16a9 9 0 0 1 13 0c0 8-9 14-13 18z"/><path d="M9 6c0 3.5-2 7-4 9"/></svg></div><div class="dif-title" data-i18n="dif6.t">Sustentabilidade Real</div><div class="dif-desc" data-i18n="dif6.d">Até 60% menos combustível e emissão de CO₂ drasticamente reduzida em relação à aviação convencional.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="dif-title" data-i18n="dif7.t">Abrangência Nacional</div><div class="dif-desc" data-i18n="dif7.d">Acesso a mais de 3.600 aeródromos no Brasil — incluindo destinos sem malha comercial.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div><div class="dif-title" data-i18n="dif8.t">Título Liquidável</div><div class="dif-desc" data-i18n="dif8.d">O título de direito de uso VOWE é transferível, negociável e pode ser convertido em horas ou aeronaves Diamond.</div></div>
+      <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="dif-title" data-i18n="dif9.t">Sem Burocracia</div><div class="dif-desc" data-i18n="dif9.d">Sem filas, cancelamentos ou atrasos. A VOWE é simples, descomplicada e eficiente por design.</div></div>
+    </div>
+  </section>
+
+  <!-- PROGRAMAS PREVIEW -->
+  <section class="section-dark">
+    <div class="section-eyebrow" data-i18n="home.prog.eyebrow">Nossos Programas</div>
+    <h2 class="section-title" data-i18n="home.prog.title">Escolha <em>como</em> você quer voar</h2>
+    <div class="programas-grid">
+      <div class="programa-card">
+        <div class="prog-badge">Membership</div>
+        <div class="prog-title" data-i18n="prog1.title">VOWE Membership</div>
+        <div class="prog-desc" data-i18n="prog1.desc">Para quem voa com frequência e busca previsibilidade máxima. Título patrimonial de uso com cotas anuais e acesso prioritário à frota.</div>
+        <ul class="prog-features">
+          <li data-i18n="prog1.f1">Pacotes de 60h, 120h ou 180h/ano</li>
+          <li data-i18n="prog1.f2">Máxima prioridade de agenda</li>
+          <li data-i18n="prog1.f3">Título de uso liquidável e transferível</li>
+          <li data-i18n="prog1.f4">Tarifa mais vantajosa do programa</li>
+        </ul>
+        <a class="prog-cta" onclick="showPage('programas')" data-i18n="prog.saibamais">Saiba mais →</a>
+      </div>
+      <div class="programa-card featured">
+        <div class="prog-badge">Fly Pass</div>
+        <div class="prog-title" data-i18n="prog2.title">VOWE Fly Pass</div>
+        <div class="prog-desc" data-i18n="prog2.desc">Ideal para clientes frequentes que buscam flexibilidade e controle. Pacote pré-pago de horas com tarifa otimizada e prioridade de agenda.</div>
+        <ul class="prog-features">
+          <li data-i18n="prog2.f1">Pacotes a partir de 20h/ano</li>
+          <li data-i18n="prog2.f2">Prioridade na agenda Fly Now</li>
+          <li data-i18n="prog2.f3">Custo por hora mais vantajoso</li>
+          <li data-i18n="prog2.f4">Sem vínculo contratual de longo prazo</li>
+        </ul>
+        <a class="prog-cta" onclick="showPage('programas')" data-i18n="prog.saibamais">Saiba mais →</a>
+      </div>
+      <div class="programa-card">
+        <div class="prog-badge">Fly Now</div>
+        <div class="prog-title" data-i18n="prog3.title">VOWE Fly Now</div>
+        <div class="prog-desc" data-i18n="prog3.desc">Voos avulsos sob demanda. Perfeito para quem voa ocasionalmente ou precisa de uma solução imediata sem mensalidades.</div>
+        <ul class="prog-features">
+          <li data-i18n="prog3.f1">Contratação direta pelo app</li>
+          <li data-i18n="prog3.f2">Pagamento apenas ao voar</li>
+          <li data-i18n="prog3.f3">Sem mensalidades ou contratos</li>
+          <li data-i18n="prog3.f4">Sujeito à disponibilidade de agenda</li>
+        </ul>
+        <a class="prog-cta" onclick="showPage('programas')" data-i18n="prog.saibamais">Saiba mais →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA QUEM -->
+  <section>
+    <div class="section-eyebrow" data-i18n="home.pq.eyebrow">Perfil de Membros</div>
+    <h2 class="section-title" data-i18n="home.pq.title">Para quem é <em>a VOWE?</em></h2>
+    <p class="section-lead" data-i18n="home.pq.lead">A VOWE atende diferentes perfis que valorizam tempo, privacidade e eficiência nos deslocamentos.</p>
+    <div class="pra-quem-list">
+      <div class="pq-item" data-i18n="pq1">Deseja aviação privada sem gestão de pilotos, manutenção ou hangaragem</div>
+      <div class="pq-item" data-i18n="pq2">Viaja pela aviação comercial e busca mais privacidade, segurança e agilidade</div>
+      <div class="pq-item" data-i18n="pq3">Percorre longas distâncias enfrentando as estradas brasileiras</div>
+      <div class="pq-item" data-i18n="pq4">Quer experimentar aviação privada antes de adquirir aeronave própria</div>
+      <div class="pq-item" data-i18n="pq5">Precisa acessar localidades remotas sem malha aérea regular</div>
+      <div class="pq-item" data-i18n="pq6">Possui empresa e busca soluções de mobilidade aérea personalizada</div>
+      <div class="pq-item" data-i18n="pq7">É proprietário de aeronave e quer reduzir custos voando menos</div>
+      <div class="pq-item" data-i18n="pq8">Busca uma forma mais sustentável de usufruir da aviação executiva</div>
+    </div>
+  </section>
+
+  <!-- APP SECTION -->
+  <section class="app-section">
+    <div class="app-inner">
+      <div>
+        <div class="section-eyebrow" data-i18n="home.app.eyebrow">App VOWE</div>
+        <h2 class="section-title" data-i18n="home.app.title">Sua frota no <em>bolso</em></h2>
+        <p class="section-lead" data-i18n="home.app.lead">Solicite voos, acompanhe operações em tempo real, gerencie saldo de horas e controle toda sua jornada com agilidade e autonomia.</p>
+        <div class="app-btns">
+          <a href="https://apps.apple.com/br/app/vowe-air/id6499342145" target="_blank" class="store-btn">
+            <span class="store-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M9 7c-3 0-4 3-4 5.5 0 3 2 7.5 4 7.5 1.088-.046 1.679-.5 3-.5 1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3-.019-2.27 2.2-2.682 2.5-3-.5-1-2.7-2.5-4-2.5-1.2 0-1.5.5-3 .5C10.5 7 9.7 7 9 7z"/><path d="M12 4a2 2 0 0 0 2-2 2 2 0 0 0-2 2"/></svg></span>
+            <div class="store-btn-text">
+              <span class="store-btn-sub" data-i18n="app.download">Download na</span>
+              <span class="store-btn-name">App Store</span>
+            </div>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.voweairmobility.app" target="_blank" class="store-btn">
+            <span class="store-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M5 3l14 9-14 9V3z"/></svg></span>
+            <div class="store-btn-text">
+              <span class="store-btn-sub" data-i18n="app.download2">Disponível no</span>
+              <span class="store-btn-name">Google Play</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="app-mockup">
+        <div class="app-mockup-img">
+          <div class="app-mockup-screen">
+            <div class="mock-header">
+              <span class="mock-logo">VOWE</span>
+              <div class="mock-notch"></div>
+            </div>
+            <div class="mock-balance">
+              <div class="mock-bal-label">SALDO DE HORAS</div>
+              <div class="mock-bal-val">42.5h</div>
+              <div class="mock-bal-sub">Fly Pass · Válido até Dez 2026</div>
+            </div>
+            <div class="mock-flights">
+              <div class="mock-flight">
+                <div>
+                  <div class="mock-flight-route">BH → São Paulo</div>
+                  <div class="mock-flight-date">15 Jul · 08:30</div>
+                </div>
+                <div class="mock-flight-status">CONFIRMADO</div>
+              </div>
+              <div class="mock-flight">
+                <div>
+                  <div class="mock-flight-route">GRU → Uberlândia</div>
+                  <div class="mock-flight-date">22 Jul · 14:00</div>
+                </div>
+                <div class="mock-flight-status">AGENDADO</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <div style="flex:1;background:var(--gold);border-radius:8px;padding:10px;text-align:center;font-size:.6rem;font-weight:700;color:var(--navy);cursor:pointer" data-i18n="app.mock.book">AGENDAR VOO</div>
+              <div style="flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:10px;text-align:center;font-size:.6rem;color:var(--gray);cursor:pointer" data-i18n="app.mock.history">HISTÓRICO</div>
+            </div>
+            <div class="mock-nav">
+              <div class="mock-nav-item active"><div class="mock-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div>Home</div></div>
+              <div class="mock-nav-item"><div class="mock-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5c-1.5-1.5-3.5-1.5-5 0L11 6 2.8 4.2c-.5-.1-.9.2-1.1.6L1 7c-.3.5-.1 1 .3 1.3L8 11l-2 3H3l-1 1 3 2 2 3 1-1v-3l3-2 3.7 6.7c.3.4.8.6 1.3.3l1.2-.7c.4-.2.7-.6.6-1.1z"/></svg></div><div data-i18n="app.mock.nav2">Voos</div></div>
+              <div class="mock-nav-item"><div class="mock-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div data-i18n="app.mock.nav3">Saldo</div></div>
+              <div class="mock-nav-item"><div class="mock-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div data-i18n="app.mock.nav4">Perfil</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP CTA -->
+  <section style="text-align:center;background:linear-gradient(135deg,rgba(201,168,76,.08),transparent 60%)">
+    <div class="gold-divider center-divider"></div>
+    <div class="section-eyebrow" style="justify-content:center" data-i18n="home.cta.eyebrow">Lista de Espera</div>
+    <h2 class="section-title" data-i18n="home.cta.title">Seja <em>VOWE</em> Membership</h2>
+    <p class="section-lead" style="margin:0 auto 2.5rem" data-i18n="home.cta.lead">As vagas são limitadas e a adesão acontece conforme a disponibilidade operacional de cada célula. Garanta sua posição na fila.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a class="btn-gold" href="https://app.voweair.com/registro/novo" target="_blank" data-i18n="home.cta.btn1">Garantir Vaga</a>
+      <a class="btn-ghost" href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank" data-i18n="home.cta.btn2">Falar com Equipe Comercial</a>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter-section">
+    <div class="newsletter-inner">
+      <h3 data-i18n="newsletter.title">Newsletter VOWE</h3>
+      <p data-i18n="newsletter.desc">Novidades sobre mobilidade aérea, atualizações do programa, benefícios exclusivos e bastidores da operação.</p>
+      <div class="newsletter-form">
+        <input type="text" data-i18n-placeholder="newsletter.name" placeholder="Seu nome"/>
+        <input type="email" data-i18n-placeholder="newsletter.placeholder" placeholder="seu@email.com"/>
+        <button class="btn-gold" data-i18n="newsletter.btn">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER HOME -->
+  <div id="footer-home"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: SOBRE
+══════════════════════════════════════════ -->
+<div id="page-sobre" class="page">
+  <div class="sobre-hero">
+    <div class="section-eyebrow" style="justify-content:center" data-i18n="sobre.eyebrow">Quem somos</div>
+    <h2 class="section-title" data-i18n="sobre.title">Sobre a <em>VOWE</em> Air Mobility</h2>
+    <p class="section-lead" style="margin:0 auto;text-align:center;max-width:700px" data-i18n="sobre.lead">Na VOWE, acreditamos que o tempo é o bem mais precioso. Nossa missão é transformar a mobilidade aérea em uma experiência leve, segura e eficiente — com liberdade, inovação e propósito.</p>
+  </div>
+
+  <section>
+    <div class="numbers-strip">
+      <div class="num-cell">
+        <span class="num-big">10+</span>
+        <span class="num-label" data-i18n="sobre.num1">Aeronaves DA62 previstas</span>
+      </div>
+      <div class="num-cell">
+        <span class="num-big">3+</span>
+        <span class="num-label" data-i18n="sobre.num2">Bases Operacionais</span>
+      </div>
+      <div class="num-cell">
+        <span class="num-big">100%</span>
+        <span class="num-label" data-i18n="sobre.num3">Vinculada à Fábrica</span>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:5rem">
+      <div class="content-block">
+        <div class="section-eyebrow" data-i18n="sobre.visao.eyebrow">Visão de Futuro</div>
+        <h3 data-i18n="sobre.visao.title">Referência em mobilidade aérea compartilhada no Brasil</h3>
+        <p data-i18n="sobre.visao.p">Nossa visão é clara: ser referência na mobilidade aérea compartilhada no Brasil, conectada à produção nacional da aeronave que operamos e aos mais altos padrões internacionais. Com a chegada da fábrica da Diamond ao país, seguimos em direção a um ecossistema integrado, sustentável e cada vez mais acessível.</p>
+        <p data-i18n="sobre.visao.p2"><strong>Voar com qualidade, segurança e inteligência</strong> deve ser uma realidade para quem valoriza o tempo e a excelência. Mais do que oferecer voos, entregamos uma jornada contínua de cuidado, conforto e autonomia.</p>
+      </div>
+      <div class="img-placeholder"></div>
+    </div>
+
+    <div class="two-col reverse" style="margin-bottom:5rem">
+      <div class="content-block">
+        <div class="section-eyebrow" data-i18n="sobre.diamond.eyebrow">Parceria com a Diamond Aircraft</div>
+        <h3 data-i18n="sobre.diamond.title">O único programa vinculado ao fabricante</h3>
+        <p data-i18n="sobre.diamond.p">A frota da VOWE é composta por aeronaves <strong>Diamond Aircraft DA62</strong>, modelo líder mundial de mercado e referência em segurança, tecnologia, eficiência e sustentabilidade.</p>
+        <p data-i18n="sobre.diamond.p2">A Diamond Aircraft possui o <strong>menor índice de acidentes do mercado</strong>, segundo a NTSB – National Transportation Safety Board. A VOWE é o único programa de mobilidade aérea compartilhada no país com vínculo direto ao fabricante — garantindo suporte total, renovação periódica da frota e agilidade na expansão.</p>
+      </div>
+      <div class="img-placeholder" style="background:linear-gradient(135deg,rgba(201,168,76,.08),var(--navy3))"></div>
+    </div>
+
+    <div class="two-col">
+      <div class="content-block">
+        <div class="section-eyebrow" data-i18n="sobre.seg.eyebrow">Segurança & Operação</div>
+        <h3 data-i18n="sobre.seg.title">Excelência em cada missão</h3>
+        <p data-i18n="sobre.seg.p1"><strong>Treinamento de equipes:</strong> Toda a operação é conduzida por profissionais altamente qualificados, seguindo protocolos internacionais de segurança e capacitação contínua pelo fabricante.</p>
+        <p data-i18n="sobre.seg.p2"><strong>Manutenção dedicada:</strong> Respaldo técnico da Aeromot, centro autorizado da Diamond Aircraft no Brasil. Inspeções rigorosas, disponibilidade técnica constante e segurança operacional em cada voo.</p>
+      </div>
+      <div class="content-block">
+        <div class="section-eyebrow" data-i18n="sobre.sust.eyebrow">Sustentabilidade</div>
+        <h3 data-i18n="sobre.sust.title">Voar consciente é possível</h3>
+        <p data-i18n="sobre.sust.p">Operamos com aeronaves Diamond DA62 que <strong>consomem até 60% menos combustível</strong> e emitem significativamente menos CO₂ em comparação com modelos convencionais da aviação executiva.</p>
+        <p data-i18n="sobre.sust.p2">Mais eficiência, menos impacto e uma nova forma de voar — inteligente, consciente e alinhada aos princípios da descarbonização.</p>
+        <div class="benefit-list" style="margin-top:1rem">
+          <ul>
+            <li data-i18n="sobre.sust.b1">Combustível JET A-1 de alta eficiência</li>
+            <li data-i18n="sobre.sust.b2">Emissão de CO₂ drasticamente reduzida</li>
+            <li data-i18n="sobre.sust.b3">Alinhado aos princípios de descarbonização</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="text-align:center;padding-top:0">
+    <a class="btn-gold" onclick="showPage('programas')" data-i18n="sobre.cta">Conhecer os Programas VOWE</a>
+  </section>
+
+  <div class="newsletter-section">
+    <div class="newsletter-inner">
+      <h3 data-i18n="newsletter.title">Newsletter VOWE</h3>
+      <p data-i18n="newsletter.desc">Novidades sobre mobilidade aérea, atualizações do programa, benefícios exclusivos e bastidores da operação.</p>
+      <div class="newsletter-form">
+        <input type="text" data-i18n-placeholder="newsletter.name" placeholder="Seu nome"/>
+        <input type="email" data-i18n-placeholder="newsletter.placeholder" placeholder="seu@email.com"/>
+        <button class="btn-gold" data-i18n="newsletter.btn">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PROGRAMAS
+══════════════════════════════════════════ -->
+<div id="page-programas" class="page">
+  <div class="prog-page-hero">
+    <div class="section-eyebrow" style="justify-content:center" data-i18n="programas.eyebrow">Soluções Personalizadas</div>
+    <h2 class="section-title" data-i18n="programas.title">Programas <em>VOWE</em></h2>
+    <p class="section-lead" style="margin:0 auto;text-align:center;max-width:600px" data-i18n="programas.lead">Soluções completas para todas as necessidades de mobilidade aérea — do voo avulso ao clube de voo exclusivo.</p>
+    <div class="prog-tabs">
+      <button class="prog-tab active" onclick="showProgTab('membership')" data-i18n="ptab.membership">Membership</button>
+      <button class="prog-tab" onclick="showProgTab('flypass')" data-i18n="ptab.flypass">Fly Pass</button>
+      <button class="prog-tab" onclick="showProgTab('flynow')" data-i18n="ptab.flynow">Fly Now</button>
+      <button class="prog-tab" onclick="showProgTab('comparativo')" data-i18n="ptab.comp">Comparativo</button>
+    </div>
+  </div>
+
+  <!-- MEMBERSHIP TAB -->
+  <div id="tab-membership" class="prog-tab-content">
+    <section>
+      <div class="two-col">
+        <div class="content-block">
+          <div class="section-eyebrow" data-i18n="mem.eyebrow">Programa Premium</div>
+          <h2 class="section-title" data-i18n="mem.title">VOWE <em>Membership</em></h2>
+          <p data-i18n="mem.p1">O VOWE Membership é um programa exclusivo de mobilidade aérea, pensado para quem busca <strong>previsibilidade, flexibilidade e excelência operacional</strong> em cada voo. Ao aderir, o cliente adquire um Título Patrimonial de Uso, tornando-se membro de uma célula VOWE.</p>
+          <p data-i18n="mem.p2">Com o Membership, voar deixa de ser uma operação pontual para se tornar uma experiência contínua, integrada e personalizada.</p>
+          <ul class="benefit-list">
+            <li data-i18n="mem.b1">Acesso garantido à frota na célula de origem</li>
+            <li data-i18n="mem.b2">Prioridade de agendamento e atendimento exclusivo</li>
+            <li data-i18n="mem.b3">Gestão operacional completa — manutenção, seguros, tripulação</li>
+            <li data-i18n="mem.b4">Direito de revenda do título conforme estatuto</li>
+            <li data-i18n="mem.b5">Gestão 100% via aplicativo VOWE</li>
+          </ul>
+        </div>
+        <div>
+          <div class="horas-grid" style="margin-top:0">
+            <div class="hora-card gold-tier">
+              <div class="hora-tier">Gold</div>
+              <div class="hora-num" style="color:var(--gold)">60</div>
+              <div class="hora-unit" data-i18n="horas.unit">horas por ano</div>
+              <div class="hora-desc" data-i18n="hora1.desc">Ideal para quem voa ocasionalmente ou está começando na mobilidade aérea.</div>
+            </div>
+            <div class="hora-card platinum-tier">
+              <div class="hora-tier">Platinum</div>
+              <div class="hora-num" style="color:#c0c0d0">120</div>
+              <div class="hora-unit" data-i18n="horas.unit">horas por ano</div>
+              <div class="hora-desc" data-i18n="hora2.desc">Para usuários frequentes que buscam mais flexibilidade e autonomia.</div>
+            </div>
+            <div class="hora-card diamond-tier">
+              <div class="hora-tier">Diamond</div>
+              <div class="hora-num" style="color:#64a0ff">180</div>
+              <div class="hora-unit" data-i18n="horas.unit">horas por ano</div>
+              <div class="hora-desc" data-i18n="hora3.desc">Para quem voa com alta frequência e exige máxima autonomia operacional.</div>
+            </div>
+          </div>
+          <div style="margin-top:2rem;padding:1.5rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;font-size:.75rem;color:var(--gray);line-height:1.7">
+            <span data-i18n="mem.note">Todos os pacotes têm validade de 12 meses e podem ser ajustados conforme o momento e necessidade de cada cliente.</span>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:3rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a class="btn-gold" href="https://app.voweair.com/registro/novo" target="_blank" data-i18n="mem.cta1">Torne-se Membro</a>
+        <a class="btn-ghost" href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank" data-i18n="mem.cta2">Falar com Equipe Comercial</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- FLY PASS TAB -->
+  <div id="tab-flypass" class="prog-tab-content" style="display:none">
+    <section>
+      <div class="two-col">
+        <div class="content-block">
+          <div class="section-eyebrow" data-i18n="fp.eyebrow">Flexibilidade e Controle</div>
+          <h2 class="section-title" data-i18n="fp.title">VOWE <em>Fly Pass</em></h2>
+          <p data-i18n="fp.p1">O VOWE Fly Pass foi desenvolvido para atender clientes frequentes que valorizam <strong>praticidade, flexibilidade e previsibilidade</strong> na mobilidade aérea. Com o programa, você garante condições comerciais mais atrativas em comparação à contratação avulsa.</p>
+          <p data-i18n="fp.p2">É a escolha ideal para quem deseja elevar a experiência na aviação executiva com eficiência, planejamento e gestão sob medida.</p>
+          <ul class="benefit-list" style="margin-top:1.5rem">
+            <li data-i18n="fp.b1">Contratação de pacotes de horas a partir de 20h/ano</li>
+            <li data-i18n="fp.b2">Custo por hora mais vantajoso vs. formato avulso</li>
+            <li data-i18n="fp.b3">Prioridade na agenda Fly Now</li>
+            <li data-i18n="fp.b4">Fila preferencial para upgrade ao Membership</li>
+          </ul>
+        </div>
+        <div class="glass-card" style="align-self:start">
+          <div class="section-eyebrow" data-i18n="fp.card.eyebrow">Benefício Fly Pass</div>
+          <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:700;color:var(--gold);margin:1rem 0">20h+</div>
+          <p style="font-size:.8rem;color:var(--gray);line-height:1.7" data-i18n="fp.card.desc">Pacotes a partir de 20 horas anuais com tarifa otimizada e gestão total via aplicativo. Sem contratos de longo prazo.</p>
+          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--glass-border)">
+            <a class="btn-gold" href="https://api.whatsapp.com/send?phone=5551995223208" target="_blank" style="width:100%;justify-content:center" data-i18n="fp.cta">Solicitar Cotação</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FLY NOW TAB -->
+  <div id="tab-flynow" class="prog-tab-content" style="display:none">
+    <section>
+      <div class="two-col">
+        <div class="content-block">
+          <div class="section-eyebrow" data-i18n="fn.eyebrow">Sob Demanda</div>
+          <h2 class="section-title" data-i18n="fn.title">VOWE <em>Fly Now</em></h2>
+          <p data-i18n="fn.p1">O VOWE Fly Now é a porta de entrada ideal para quem deseja usufruir da aviação executiva com <strong>total liberdade, sem vínculo contratual</strong> ou compromisso com planos de horas.</p>
+          <p data-i18n="fn.p2">Contrate voos avulsos diretamente pelo aplicativo ou com o apoio da central exclusiva de atendimento. O pagamento é feito apenas quando você voar, com total transparência.</p>
+          <div class="gold-divider"></div>
+          <h3 style="font-size:.85rem;font-weight:700;color:var(--white);margin-bottom:1rem;letter-spacing:.05em" data-i18n="fn.apps.title">Aplicações comuns</h3>
+          <ul class="benefit-list">
+            <li data-i18n="fn.a1">Viagens de última hora para reuniões estratégicas</li>
+            <li data-i18n="fn.a2">Retornos rápidos após compromissos profissionais</li>
+            <li data-i18n="fn.a3">Deslocamentos entre polos logísticos e industriais</li>
+            <li data-i18n="fn.a4">Acesso a localidades sem malha aérea regular</li>
+            <li data-i18n="fn.a5">Alternativa para quem não abre mão de conforto</li>
+          </ul>
+        </div>
+        <div class="glass-card" style="align-self:start">
+          <div class="section-eyebrow" data-i18n="fn.card.eyebrow">Como funciona</div>
+          <div style="display:flex;flex-direction:column;gap:1.2rem;margin-top:1rem">
+            <div style="display:flex;gap:1rem;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:var(--gold);flex-shrink:0">01</div>
+              <div><div style="font-size:.78rem;font-weight:700;color:var(--white);margin-bottom:3px" data-i18n="fn.step1.t">Consulte disponibilidade</div><div style="font-size:.72rem;color:var(--gray)" data-i18n="fn.step1.d">Acesse o app e verifique aeronaves disponíveis para sua rota</div></div>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:var(--gold);flex-shrink:0">02</div>
+              <div><div style="font-size:.78rem;font-weight:700;color:var(--white);margin-bottom:3px" data-i18n="fn.step2.t">Escolha sua rota</div><div style="font-size:.72rem;color:var(--gray)" data-i18n="fn.step2.d">Selecione origem, destino, data e número de passageiros</div></div>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:var(--gold);flex-shrink:0">03</div>
+              <div><div style="font-size:.78rem;font-weight:700;color:var(--white);margin-bottom:3px" data-i18n="fn.step3.t">Confirme e voe</div><div style="font-size:.72rem;color:var(--gray)" data-i18n="fn.step3.d">Pagamento antecipado via app e decolagem sem filas ou burocracia</div></div>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--glass-border)">
+            <a class="btn-gold" href="https://api.whatsapp.com/send?phone=5551995223208" target="_blank" style="width:100%;justify-content:center" data-i18n="fn.cta">Solicitar Cotação Agora</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- COMPARATIVO TAB -->
+  <div id="tab-comparativo" class="prog-tab-content" style="display:none">
+    <section>
+      <div class="section-eyebrow" data-i18n="comp.eyebrow">Análise Comparativa</div>
+      <h2 class="section-title" data-i18n="comp.title">Membership vs. <em>outras opções</em></h2>
+      <p class="section-lead" data-i18n="comp.lead">Viagem de 600km, 4 passageiros, antecedência de 4 dias — comparação real entre meios executivos.</p>
+      <div class="comparativo">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th data-i18n="comp.cat">Categoria</th>
+              <th style="color:var(--gold)" data-i18n="comp.membership">Membership</th>
+              <th data-i18n="comp.suv">SUV Luxo</th>
+              <th data-i18n="comp.comercial">Aviação Comercial</th>
+              <th data-i18n="comp.propria">Aeronave Própria</th>
+              <th data-i18n="comp.taxi">Táxi Aéreo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td data-i18n="comp.r1">Tempo (600km)</td><td class="highlight-col" style="color:var(--gold);font-weight:700">1h45min</td><td>7 horas</td><td>1h20min + embarque</td><td>1h45min</td><td>1h20min</td></tr>
+            <tr><td data-i18n="comp.r2">Custo do trajeto</td><td class="highlight-col" style="color:var(--gold);font-weight:700">R$ 6.037</td><td>R$ 400</td><td>R$ 6.000</td><td>R$ 5.565</td><td>R$ 16.200</td></tr>
+            <tr><td data-i18n="comp.r3">Custo fixo mensal</td><td class="highlight-col" style="color:var(--gold);font-weight:700">R$ 4.400</td><td>R$ 9.775</td><td>—</td><td>R$ 45.000</td><td>—</td></tr>
+            <tr><td data-i18n="comp.r4">Título sem depreciação</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">—</span></td><td><span class="cross">✗</span></td><td><span class="cross">—</span></td></tr>
+            <tr><td data-i18n="comp.r5">Piloto incluso</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td data-i18n="comp.r6">Disponibilidade garantida</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td data-i18n="comp.r7">Livre escolha de rotas</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td data-i18n="comp.r8">Gestão de custos inclusa</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td data-i18n="comp.r9">Manutenção inclusa</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td data-i18n="comp.r10">Privacidade</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td data-i18n="comp.r11">Pet Friendly</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">—</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div class="newsletter-section">
+    <div class="newsletter-inner">
+      <h3 data-i18n="newsletter.title">Newsletter VOWE</h3>
+      <p data-i18n="newsletter.desc">Novidades sobre mobilidade aérea, atualizações do programa e benefícios exclusivos.</p>
+      <div class="newsletter-form">
+        <input type="text" data-i18n-placeholder="newsletter.name" placeholder="Seu nome"/>
+        <input type="email" data-i18n-placeholder="newsletter.placeholder" placeholder="seu@email.com"/>
+        <button class="btn-gold" data-i18n="newsletter.btn">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: FROTA
+══════════════════════════════════════════ -->
+<div id="page-frota" class="page">
+  <div class="sobre-hero">
+    <div class="section-eyebrow" style="justify-content:center" data-i18n="frota.eyebrow">Nossa Frota</div>
+    <h2 class="section-title" data-i18n="frota.title">Diamond <em>DA62</em></h2>
+    <p class="section-lead" style="margin:0 auto;text-align:center;max-width:700px" data-i18n="frota.lead">O equilíbrio ideal entre performance, sofisticação, segurança e sustentabilidade. O líder mundial da sua categoria.</p>
+  </div>
+
+  <section>
+    <div class="specs-grid">
+      <div class="spec-card"><div class="spec-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div><div class="spec-label" data-i18n="spec1.l">Assentos</div><div class="spec-value">7</div><div class="spec-unit" data-i18n="spec1.u">passageiros</div></div>
+      <div class="spec-card"><div class="spec-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><line x1="3" y1="22" x2="3" y2="2"/><path d="M11 22V6l-8-4"/><path d="M11 6h5a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2v9"/><path d="M3 6h8"/></svg></div><div class="spec-label" data-i18n="spec2.l">Consumo 60%</div><div class="spec-value">44.7</div><div class="spec-unit">lt/h (2 motores)</div></div>
+      <div class="spec-card"><div class="spec-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2a3 3 0 0 0-3 3c0 .2.03.4.07.58L3 9v2l1 1h3v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-9h3l1-1V9l-6.07-3.42c.04-.18.07-.38.07-.58a3 3 0 0 0-3-3z"/></svg></div><div class="spec-label" data-i18n="spec3.l">Carga Útil</div><div class="spec-value">702</div><div class="spec-unit">kg</div></div>
+      <div class="spec-card"><div class="spec-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="spec-label" data-i18n="spec4.l">Velocidade</div><div class="spec-value">356</div><div class="spec-unit">km/h</div></div>
+      <div class="spec-card"><div class="spec-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="10"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/><path d="M12 12l3.5-3.5"/></svg></div><div class="spec-label" data-i18n="spec5.l">Alcance</div><div class="spec-value">2.385</div><div class="spec-unit">km</div></div>
+      <div class="spec-card"><div class="spec-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div><div class="spec-label" data-i18n="spec6.l">Combustível</div><div class="spec-value">JET A-1</div><div class="spec-unit" data-i18n="spec6.u">alta eficiência</div></div>
+    </div>
+
+    <div class="two-col" style="margin:4rem 0">
+      <div class="content-block">
+        <div class="section-eyebrow" data-i18n="frota.rev.eyebrow">Revolucionário</div>
+        <h3 data-i18n="frota.rev.title">O SUV de Luxo dos Ares</h3>
+        <p data-i18n="frota.rev.p1">O Diamond DA62 é mais do que um avião — é o equilíbrio ideal entre performance e sofisticação. Com design elegante e interior espaçoso, acomoda até 7 ocupantes com conforto e ergonomia típicos da aviação executiva.</p>
+        <p data-i18n="frota.rev.p2">Cabine silenciosa, excelente visibilidade e tecnologia embarcada de ponta — promovendo uma jornada leve e segura do início ao fim. Comparável ao tamanho e conforto de um SUV, com capacidade para passageiros e bagagem.</p>
+        <p data-i18n="frota.rev.p3">Olhando para o futuro, a Diamond emite muito menos CO₂ e consome até <strong>60% menos combustível</strong> em relação aos concorrentes — combinando performance com consciência ambiental.</p>
+      </div>
+      <div class="content-block">
+        <div class="section-eyebrow" data-i18n="frota.seg.eyebrow">Segurança</div>
+        <h3 data-i18n="frota.seg.title">Referência absoluta no setor</h3>
+        <p data-i18n="frota.seg.p1">A Diamond Aircraft possui o <strong>menor índice de acidentes do mercado</strong>, segundo a NTSB. Pioneira no uso de cabine com célula de sobrevivência baseada na tecnologia da F1.</p>
+        <p data-i18n="frota.seg.p2">A única fabricante de aeronaves de pequeno porte a executar crash test em toda a estrutura — com modelos que resistem até <strong>26G de impacto</strong>.</p>
+        <ul class="benefit-list" style="margin-top:1rem">
+          <li data-i18n="frota.seg.b1">Menor índice de acidentes da categoria (NTSB)</li>
+          <li data-i18n="frota.seg.b2">Dois motores JET A-1 de alta eficiência</li>
+          <li data-i18n="frota.seg.b3">Estrutura para pousos em pistas curtas</li>
+          <li data-i18n="frota.seg.b4">Resistência estrutural até 26G de impacto</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:4rem 0">
+      <div class="section-eyebrow" data-i18n="frota.av.eyebrow">Aviônica</div>
+      <h2 class="section-title" data-i18n="frota.av.title">Garmin G1000NXi — <em>tecnologia de ponta</em></h2>
+      <p class="section-lead" data-i18n="frota.av.lead">Glasscockpit equipado com o Garmin G1000NXi instalado de série — recursos tecnológicos semelhantes aos de aeronaves de grande porte.</p>
+      <div class="diferenciais-grid" style="margin-top:2rem">
+        <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="dif-title">Garmin G1000NXi</div><div class="dif-desc" data-i18n="frota.av1">Glasscockpit completo de série, com recursos equivalentes à aviação de passageiros de grande porte.</div></div>
+        <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="15" x2="4" y2="15"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="15" x2="22" y2="15"/></svg></div><div class="dif-title">GFC700 3 eixos</div><div class="dif-desc" data-i18n="frota.av2">Piloto automático de três eixos com Yaw Damper da Garmin instalado de série.</div></div>
+        <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg></div><div class="dif-title">Radar Meteorológico</div><div class="dif-desc" data-i18n="frota.av3">Garmin GWX70 e StormScope WX500 opcionais para máxima segurança em condições adversas.</div></div>
+        <div class="dif-card"><div class="dif-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div><div class="dif-title">FlightStream 510</div><div class="dif-desc" data-i18n="frota.av4">Facilita o carregamento de planejamentos de voo direto para a aeronave via dispositivos móveis.</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-eyebrow" data-i18n="frota.dep.eyebrow">Depoimentos</div>
+      <h2 class="section-title" data-i18n="frota.dep.title">O que dizem os <em>pilotos</em></h2>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-quote" data-i18n="test1.q">"Em relação à segurança é uma aeronave que dispensa comentários — a tecnologia com as telas GARMIN é absurdamente inigualável com as outras."</div>
+          <div class="testimonial-author">Cmdte. Diego Boulhosa</div>
+          <div class="testimonial-role" data-i18n="test.role">Piloto Comercial</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-quote" data-i18n="test2.q">"A estrutura é muito forte e o trem de pouso é muito forte. A resistência é fabulosa e o custo operacional é muito baixo."</div>
+          <div class="testimonial-author">Cmte. Roberto Cunha</div>
+          <div class="testimonial-role" data-i18n="test.role">Piloto Comercial</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="newsletter-section">
+    <div class="newsletter-inner">
+      <h3 data-i18n="newsletter.title">Newsletter VOWE</h3>
+      <p data-i18n="newsletter.desc">Novidades sobre mobilidade aérea e atualizações da frota.</p>
+      <div class="newsletter-form">
+        <input type="text" data-i18n-placeholder="newsletter.name" placeholder="Seu nome"/>
+        <input type="email" data-i18n-placeholder="newsletter.placeholder" placeholder="seu@email.com"/>
+        <button class="btn-gold" data-i18n="newsletter.btn">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: CONTATO
+══════════════════════════════════════════ -->
+<div id="page-contato" class="page">
+  <div class="contato-hero">
+    <div class="section-eyebrow" style="justify-content:center" data-i18n="contato.eyebrow">Fale Conosco</div>
+    <h2 class="section-title" data-i18n="contato.title"><em>Contato</em> VOWE</h2>
+    <p class="section-lead" style="margin:0 auto;text-align:center;max-width:600px" data-i18n="contato.lead">Conte sua necessidade de viagem e nossa equipe apresentará uma solução personalizada.</p>
+  </div>
+
+  <section>
+    <div class="contato-grid">
+      <div>
+        <div class="contact-cards">
+          <a href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank" class="contact-card">
+            <div class="contact-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div>
+              <div class="contact-card-label">WhatsApp</div>
+              <div class="contact-card-val">+55 31 99834-2508</div>
+            </div>
+          </a>
+          <a href="mailto:contato@voweair.com" class="contact-card">
+            <div class="contact-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div>
+              <div class="contact-card-label">Email</div>
+              <div class="contact-card-val">contato@voweair.com</div>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/voweair/" target="_blank" class="contact-card">
+            <div class="contact-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path d="M16 7l-2-4H10L8 7"/><circle cx="12" cy="14" r="4"/></svg></div>
+            <div>
+              <div class="contact-card-label">Instagram</div>
+              <div class="contact-card-val">@voweair</div>
+            </div>
+          </a>
+          <a href="https://www.facebook.com/voweair" target="_blank" class="contact-card">
+            <div class="contact-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div>
+              <div class="contact-card-label">Facebook</div>
+              <div class="contact-card-val">facebook.com/voweair</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="glass-card" style="margin-top:1.5rem">
+          <div class="section-eyebrow" data-i18n="contato.app.eyebrow">App VOWE</div>
+          <p style="font-size:.8rem;color:var(--gray);line-height:1.7;margin-bottom:1.2rem" data-i18n="contato.app.desc">Disponível para iOS e Android. Baixe agora e realize sua pré-reserva sem custo.</p>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <a href="https://apps.apple.com/br/app/vowe-air/id6499342145" target="_blank" class="store-btn" style="flex:1;min-width:130px">
+              <span class="store-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M9 7c-3 0-4 3-4 5.5 0 3 2 7.5 4 7.5 1.088-.046 1.679-.5 3-.5 1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3-.019-2.27 2.2-2.682 2.5-3-.5-1-2.7-2.5-4-2.5-1.2 0-1.5.5-3 .5C10.5 7 9.7 7 9 7z"/><path d="M12 4a2 2 0 0 0 2-2 2 2 0 0 0-2 2"/></svg></span>
+              <div class="store-btn-text"><span class="store-btn-sub">Download na</span><span class="store-btn-name">App Store</span></div>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.voweairmobility.app" target="_blank" class="store-btn" style="flex:1;min-width:130px">
+              <span class="store-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M5 3l14 9-14 9V3z"/></svg></span>
+              <div class="store-btn-text"><span class="store-btn-sub">Disponível no</span><span class="store-btn-name">Google Play</span></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-title" data-i18n="contato.form.title">Envie uma mensagem</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="form.nome">Nome</label>
+            <input type="text" data-i18n-placeholder="form.nome.ph"/>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form.empresa">Empresa</label>
+            <input type="text" data-i18n-placeholder="form.empresa.ph"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="form.email">E-mail</label>
+            <input type="email" data-i18n-placeholder="form.email.ph"/>
+          </div>
+          <div class="form-group">
+            <label data-i18n="form.tel">Telefone</label>
+            <input type="tel" data-i18n-placeholder="form.tel.ph"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="form.interesse">Interesse</label>
+          <select>
+            <option value="" data-i18n="form.sel">Selecione...</option>
+            <option value="membership" data-i18n="form.opt1">VOWE Membership</option>
+            <option value="flypass" data-i18n="form.opt2">VOWE Fly Pass</option>
+            <option value="flynow" data-i18n="form.opt3">VOWE Fly Now</option>
+            <option value="outro" data-i18n="form.opt4">Outro assunto</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="form.msg">Mensagem</label>
+          <textarea data-i18n-placeholder="form.msg.ph"></textarea>
+        </div>
+        <button class="btn-gold" style="width:100%;justify-content:center" onclick="sendWhatsapp()" data-i18n="form.send">Enviar via WhatsApp</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="newsletter-section">
+    <div class="newsletter-inner">
+      <h3 data-i18n="newsletter.title">Newsletter VOWE</h3>
+      <p data-i18n="newsletter.desc">Novidades sobre mobilidade aérea, atualizações do programa e benefícios exclusivos.</p>
+      <div class="newsletter-form">
+        <input type="text" data-i18n-placeholder="newsletter.name" placeholder="Seu nome"/>
+        <input type="email" data-i18n-placeholder="newsletter.placeholder" placeholder="seu@email.com"/>
+        <button class="btn-gold" data-i18n="newsletter.btn">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ FOOTER (shared) ══════ -->
+<template id="footer-tpl">
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h4>VOW<span>E</span> Air Mobility</h4>
+        <p data-i18n="footer.desc">Mobilidade aérea inteligente. Frota exclusiva Diamond DA62, operação via app e total liberdade para voar do seu jeito.</p>
+        <div class="footer-social">
+          <a class="social-btn" href="https://www.instagram.com/voweair/" target="_blank">Ig</a>
+          <a class="social-btn" href="https://www.facebook.com/voweair" target="_blank">Fb</a>
+          <a class="social-btn" href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank">Wp</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer.nav">Navegação</h5>
+        <ul>
+          <li><a onclick="showPage('home')" data-i18n="nav.home">Home</a></li>
+          <li><a onclick="showPage('sobre')" data-i18n="nav.sobre">Sobre</a></li>
+          <li><a onclick="showPage('programas')" data-i18n="nav.programas">Programas</a></li>
+          <li><a onclick="showPage('frota')" data-i18n="nav.frota">Frota</a></li>
+          <li><a onclick="showPage('contato')" data-i18n="nav.contato">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer.programs">Programas</h5>
+        <ul>
+          <li><a onclick="showPage('programas');showProgTab('membership')">Membership</a></li>
+          <li><a onclick="showPage('programas');showProgTab('flypass')">Fly Pass</a></li>
+          <li><a onclick="showPage('programas');showProgTab('flynow')">Fly Now</a></li>
+          <li><a href="https://app.voweair.com/registro/novo" target="_blank" data-i18n="footer.waitlist">Lista de Espera</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="footer.contact">Contato</h5>
+        <ul>
+          <li><a href="mailto:contato@voweair.com">contato@voweair.com</a></li>
+          <li><a href="https://api.whatsapp.com/send?phone=5531998342508" target="_blank">+55 31 99834-2508</a></li>
+          <li><a href="https://voweair.com/privacidade/" target="_blank" data-i18n="footer.privacy">Privacidade</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>
+        <p data-i18n="footer.anac">COA Nº 2021-09-00IC-01-01/ANAC</p>
+        <p>VOWE Air Mobility © 2026 — <span data-i18n="footer.rights">Todos os direitos reservados.</span></p>
+        <p style="margin-top:6px;font-size:.55rem;color:rgba(139,149,170,.35);max-width:500px" data-i18n="footer.disclaimer">As informações apresentadas refletem as condições vigentes e podem ser atualizadas periodicamente pela VOWE, sem aviso prévio.</p>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+// ─── i18n ───────────────────────────────────────────
+const LANGS = {
+  pt: {
+    'nav.home':'Home','nav.sobre':'Sobre','nav.programas':'Programas',
+    'nav.frota':'Frota','nav.contato':'Contato','nav.cta':'Torne-se Membro',
+    'hero.eyebrow':'Aviação Executiva Premium',
+    'hero.h1':'Uma <em>nova forma</em><br/>de voar.',
+    'hero.sub':'Frota exclusiva Diamond DA62, operação integrada via app e total liberdade de escolha — por assinatura, pacote ou voo avulso.',
+    'hero.cta1':'Torne-se Membro','hero.cta2':'Ver Programas',
+    'hero.stat1':'Aeródromos','hero.stat2':'Frota exclusiva','hero.stat3':'Menos combustível',
+    'home.dif.eyebrow':'Por que a VOWE','home.dif.title':'Diferenciais que <em>transformam</em> sua experiência',
+    'home.dif.lead':'A VOWE foi construída sobre pilares reais de inovação, segurança e praticidade — não promessas vazias.',
+    'dif1.t':'Frota Diamond DA62','dif1.d':'Aeronaves líderes mundiais em segurança, tecnologia e sustentabilidade — vinculadas ao fabricante.',
+    'dif2.t':'Privacidade Total','dif2.d':'Terminais privativos da aviação executiva. Voe com quem quiser — sócios, família, pets.',
+    'dif3.t':'100% via App','dif3.d':'Agende voos, acompanhe operações e gerencie saldo em tempo real pelo aplicativo VOWE.',
+    'dif4.t':'Previsibilidade de Custos','dif4.d':'Todos os custos fixos e variáveis são conhecidos antecipadamente. Sem surpresas, sem flutuações.',
+    'dif5.t':'Segurança RBAC 135','dif5.d':'Toda operação certificada pela ANAC. Equipe treinada pelo fabricante e menor índice de acidentes da categoria.',
+    'dif6.t':'Sustentabilidade Real','dif6.d':'Até 60% menos combustível e emissão de CO₂ drasticamente reduzida em relação à aviação convencional.',
+    'dif7.t':'Abrangência Nacional','dif7.d':'Acesso a mais de 3.600 aeródromos no Brasil — incluindo destinos sem malha comercial.',
+    'dif8.t':'Título Liquidável','dif8.d':'O título de direito de uso VOWE é transferível, negociável e pode ser convertido em horas ou aeronaves Diamond.',
+    'dif9.t':'Sem Burocracia','dif9.d':'Sem filas, cancelamentos ou atrasos. A VOWE é simples, descomplicada e eficiente por design.',
+    'home.prog.eyebrow':'Nossos Programas','home.prog.title':'Escolha <em>como</em> você quer voar',
+    'prog1.title':'VOWE Membership','prog1.desc':'Para quem voa com frequência e busca previsibilidade máxima. Título patrimonial de uso com cotas anuais e acesso prioritário à frota.',
+    'prog1.f1':'Pacotes de 60h, 120h ou 180h/ano','prog1.f2':'Máxima prioridade de agenda','prog1.f3':'Título de uso liquidável e transferível','prog1.f4':'Tarifa mais vantajosa do programa',
+    'prog2.title':'VOWE Fly Pass','prog2.desc':'Ideal para clientes frequentes que buscam flexibilidade e controle. Pacote pré-pago de horas com tarifa otimizada.',
+    'prog2.f1':'Pacotes a partir de 20h/ano','prog2.f2':'Prioridade na agenda Fly Now','prog2.f3':'Custo por hora mais vantajoso','prog2.f4':'Sem vínculo contratual de longo prazo',
+    'prog3.title':'VOWE Fly Now','prog3.desc':'Voos avulsos sob demanda. Perfeito para quem voa ocasionalmente ou precisa de uma solução imediata sem mensalidades.',
+    'prog3.f1':'Contratação direta pelo app','prog3.f2':'Pagamento apenas ao voar','prog3.f3':'Sem mensalidades ou contratos','prog3.f4':'Sujeito à disponibilidade de agenda',
+    'prog.saibamais':'Saiba mais →',
+    'home.pq.eyebrow':'Perfil de Membros','home.pq.title':'Para quem é <em>a VOWE?</em>',
+    'home.pq.lead':'A VOWE atende diferentes perfis que valorizam tempo, privacidade e eficiência nos deslocamentos.',
+    'pq1':'Deseja aviação privada sem gestão de pilotos, manutenção ou hangaragem',
+    'pq2':'Viaja pela aviação comercial e busca mais privacidade, segurança e agilidade',
+    'pq3':'Percorre longas distâncias enfrentando as estradas brasileiras',
+    'pq4':'Quer experimentar aviação privada antes de adquirir aeronave própria',
+    'pq5':'Precisa acessar localidades remotas sem malha aérea regular',
+    'pq6':'Possui empresa e busca soluções de mobilidade aérea personalizada',
+    'pq7':'É proprietário de aeronave e quer reduzir custos voando menos',
+    'pq8':'Busca uma forma mais sustentável de usufruir da aviação executiva',
+    'home.app.eyebrow':'App VOWE','home.app.title':'Sua frota no <em>bolso</em>',
+    'home.app.lead':'Solicite voos, acompanhe operações em tempo real, gerencie saldo de horas e controle toda sua jornada com agilidade e autonomia.',
+    'app.download':'Download na','app.download2':'Disponível no',
+    'app.mock.book':'AGENDAR VOO','app.mock.history':'HISTÓRICO',
+    'app.mock.nav2':'Voos','app.mock.nav3':'Saldo','app.mock.nav4':'Perfil',
+    'home.cta.eyebrow':'Lista de Espera','home.cta.title':'Seja <em>VOWE</em> Membership',
+    'home.cta.lead':'As vagas são limitadas e a adesão acontece conforme a disponibilidade operacional. Garanta sua posição na fila.',
+    'home.cta.btn1':'Garantir Vaga','home.cta.btn2':'Falar com Equipe Comercial',
+    'newsletter.title':'Newsletter VOWE','newsletter.btn':'Cadastrar',
+    'newsletter.desc':'Novidades sobre mobilidade aérea, atualizações do programa, benefícios exclusivos e bastidores da operação.',
+    'newsletter.name':'Seu nome',
+    'newsletter.placeholder':'seu@email.com',
+    'sobre.eyebrow':'Quem somos','sobre.title':'Sobre a <em>VOWE</em> Air Mobility',
+    'sobre.lead':'Na VOWE, acreditamos que o tempo é o bem mais precioso. Nossa missão é transformar a mobilidade aérea em uma experiência leve, segura e eficiente.',
+    'sobre.num1':'Aeronaves DA62 previstas','sobre.num2':'Bases Operacionais','sobre.num3':'Vinculada à Fábrica',
+    'sobre.cta':'Conhecer os Programas VOWE',
+    'programas.eyebrow':'Soluções Personalizadas','programas.title':'Programas <em>VOWE</em>',
+    'programas.lead':'Soluções completas para todas as necessidades de mobilidade aérea — do voo avulso ao clube de voo exclusivo.',
+    'ptab.membership':'Membership','ptab.flypass':'Fly Pass','ptab.flynow':'Fly Now','ptab.comp':'Comparativo',
+    'mem.eyebrow':'Programa Premium','mem.title':'VOWE <em>Membership</em>',
+    'mem.p1':'O VOWE Membership é um programa exclusivo de mobilidade aérea, pensado para quem busca previsibilidade, flexibilidade e excelência operacional em cada voo.',
+    'mem.p2':'Com o Membership, voar deixa de ser uma operação pontual para se tornar uma experiência contínua, integrada e personalizada.',
+    'mem.b1':'Acesso garantido à frota na célula de origem','mem.b2':'Prioridade de agendamento e atendimento exclusivo',
+    'mem.b3':'Gestão operacional completa — manutenção, seguros, tripulação','mem.b4':'Direito de revenda do título conforme estatuto','mem.b5':'Gestão 100% via aplicativo VOWE',
+    'horas.unit':'horas por ano',
+    'hora1.desc':'Ideal para quem voa ocasionalmente ou está começando na mobilidade aérea.',
+    'hora2.desc':'Para usuários frequentes que buscam mais flexibilidade e autonomia.',
+    'hora3.desc':'Para quem voa com alta frequência e exige máxima autonomia operacional.',
+    'mem.note':'Todos os pacotes têm validade de 12 meses e podem ser ajustados conforme o momento e necessidade de cada cliente.',
+    'mem.cta1':'Torne-se Membro','mem.cta2':'Falar com Equipe Comercial',
+    'fp.eyebrow':'Flexibilidade e Controle','fp.title':'VOWE <em>Fly Pass</em>',
+    'fp.p1':'O VOWE Fly Pass foi desenvolvido para atender clientes frequentes que valorizam praticidade, flexibilidade e previsibilidade na mobilidade aérea.',
+    'fp.p2':'É a escolha ideal para quem deseja elevar a experiência na aviação executiva com eficiência, planejamento e gestão sob medida.',
+    'fp.b1':'Contratação de pacotes a partir de 20h/ano','fp.b2':'Custo por hora mais vantajoso vs. formato avulso',
+    'fp.b3':'Prioridade na agenda Fly Now','fp.b4':'Fila preferencial para upgrade ao Membership',
+    'fp.card.eyebrow':'Benefício Fly Pass','fp.card.desc':'Pacotes a partir de 20 horas anuais com tarifa otimizada e gestão total via aplicativo.',
+    'fp.cta':'Solicitar Cotação',
+    'fn.eyebrow':'Sob Demanda','fn.title':'VOWE <em>Fly Now</em>',
+    'fn.p1':'O VOWE Fly Now é a porta de entrada ideal para quem deseja usufruir da aviação executiva com total liberdade, sem vínculo contratual.',
+    'fn.p2':'Contrate voos avulsos diretamente pelo app ou com o apoio da central exclusiva de atendimento.',
+    'fn.apps.title':'Aplicações comuns',
+    'fn.a1':'Viagens de última hora para reuniões estratégicas','fn.a2':'Retornos rápidos após compromissos profissionais',
+    'fn.a3':'Deslocamentos entre polos logísticos e industriais','fn.a4':'Acesso a localidades sem malha aérea regular',
+    'fn.a5':'Alternativa para quem não abre mão de conforto',
+    'fn.card.eyebrow':'Como funciona','fn.step1.t':'Consulte disponibilidade','fn.step1.d':'Acesse o app e verifique aeronaves disponíveis para sua rota',
+    'fn.step2.t':'Escolha sua rota','fn.step2.d':'Selecione origem, destino, data e número de passageiros',
+    'fn.step3.t':'Confirme e voe','fn.step3.d':'Pagamento antecipado via app e decolagem sem filas ou burocracia',
+    'fn.cta':'Solicitar Cotação Agora',
+    'comp.eyebrow':'Análise Comparativa','comp.title':'Membership vs. <em>outras opções</em>',
+    'comp.lead':'Viagem de 600km, 4 passageiros, antecedência de 4 dias — comparação real entre meios executivos.',
+    'comp.cat':'Categoria','comp.membership':'Membership','comp.suv':'SUV Luxo','comp.comercial':'Aviação Comercial','comp.propria':'Aeronave Própria','comp.taxi':'Táxi Aéreo',
+    'comp.r1':'Tempo (600km)','comp.r2':'Custo do trajeto','comp.r3':'Custo fixo mensal','comp.r4':'Título sem depreciação',
+    'comp.r5':'Piloto incluso','comp.r6':'Disponibilidade garantida','comp.r7':'Livre escolha de rotas','comp.r8':'Gestão de custos inclusa',
+    'comp.r9':'Manutenção inclusa','comp.r10':'Privacidade','comp.r11':'Pet Friendly',
+    'frota.eyebrow':'Nossa Frota','frota.title':'Diamond <em>DA62</em>',
+    'frota.lead':'O equilíbrio ideal entre performance, sofisticação, segurança e sustentabilidade. O líder mundial da sua categoria.',
+    'spec1.l':'Assentos','spec1.u':'passageiros','spec2.l':'Consumo 60%','spec3.l':'Carga Útil','spec4.l':'Velocidade','spec5.l':'Alcance','spec6.l':'Combustível','spec6.u':'alta eficiência',
+    'frota.rev.eyebrow':'Revolucionário','frota.rev.title':'O SUV de Luxo dos Ares',
+    'frota.rev.p1':'O Diamond DA62 é mais do que um avião — é o equilíbrio ideal entre performance e sofisticação. Acomoda até 7 ocupantes com conforto e ergonomia típicos da aviação executiva.',
+    'frota.rev.p2':'Cabine silenciosa, excelente visibilidade e tecnologia embarcada de ponta — promovendo uma jornada leve e segura do início ao fim.',
+    'frota.rev.p3':'A Diamond emite muito menos CO₂ e consome até 60% menos combustível em relação aos concorrentes.',
+    'frota.seg.eyebrow':'Segurança','frota.seg.title':'Referência absoluta no setor',
+    'frota.seg.p1':'A Diamond Aircraft possui o menor índice de acidentes do mercado, segundo a NTSB. Pioneira no uso de cabine com célula de sobrevivência baseada na tecnologia da F1.',
+    'frota.seg.p2':'A única fabricante a executar crash test em toda a estrutura — com modelos que resistem até 26G de impacto.',
+    'frota.seg.b1':'Menor índice de acidentes da categoria (NTSB)','frota.seg.b2':'Dois motores JET A-1 de alta eficiência',
+    'frota.seg.b3':'Estrutura para pousos em pistas curtas','frota.seg.b4':'Resistência estrutural até 26G de impacto',
+    'frota.av.eyebrow':'Aviônica','frota.av.title':'Garmin G1000NXi — <em>tecnologia de ponta</em>',
+    'frota.av.lead':'Glasscockpit com recursos tecnológicos semelhantes aos de aeronaves de grande porte.',
+    'frota.av1':'Glasscockpit completo de série, com recursos equivalentes à aviação de passageiros de grande porte.',
+    'frota.av2':'Piloto automático de três eixos com Yaw Damper da Garmin instalado de série.',
+    'frota.av3':'Garmin GWX70 e StormScope WX500 opcionais para máxima segurança em condições adversas.',
+    'frota.av4':'Facilita o carregamento de planejamentos de voo direto para a aeronave.',
+    'frota.dep.eyebrow':'Depoimentos','frota.dep.title':'O que dizem os <em>pilotos</em>',
+    'test1.q':'"Em relação à segurança é uma aeronave que dispensa comentários — a tecnologia com as telas GARMIN é absurdamente inigualável com as outras."',
+    'test2.q':'"A estrutura é muito forte e o trem de pouso é muito forte. A resistência é fabulosa e o custo operacional é muito baixo."',
+    'test.role':'Piloto Comercial',
+    'contato.eyebrow':'Fale Conosco','contato.title':'<em>Contato</em> VOWE',
+    'contato.lead':'Conte sua necessidade de viagem e nossa equipe apresentará uma solução personalizada.',
+    'contato.app.eyebrow':'App VOWE','contato.app.desc':'Disponível para iOS e Android. Baixe agora e realize sua pré-reserva sem custo.',
+    'contato.form.title':'Envie uma mensagem',
+    'form.nome':'Nome','form.nome.ph':'Seu nome completo',
+    'form.empresa':'Empresa','form.empresa.ph':'Nome da empresa',
+    'form.email':'E-mail','form.email.ph':'seu@email.com',
+    'form.tel':'Telefone','form.tel.ph':'(11) 99999-9999',
+    'form.interesse':'Interesse','form.sel':'Selecione...','form.opt1':'VOWE Membership','form.opt2':'VOWE Fly Pass','form.opt3':'VOWE Fly Now','form.opt4':'Outro assunto',
+    'form.msg':'Mensagem','form.msg.ph':'Conte sua necessidade de viagem...','form.send':'Enviar via WhatsApp',
+    'footer.desc':'Mobilidade aérea inteligente. Frota exclusiva Diamond DA62, operação via app e total liberdade para voar do seu jeito.',
+    'footer.nav':'Navegação','footer.programs':'Programas','footer.contact':'Contato',
+    'footer.waitlist':'Lista de Espera','footer.privacy':'Privacidade','footer.anac':'COA Nº 2021-09-00IC-01-01/ANAC',
+    'footer.rights':'Todos os direitos reservados.',
+    'footer.disclaimer':'As informações apresentadas refletem as condições vigentes e podem ser atualizadas periodicamente pela VOWE, sem aviso prévio.',
+    // sobre page details
+    'sobre.visao.eyebrow':'Visão de Futuro','sobre.visao.title':'Referência em mobilidade aérea compartilhada no Brasil',
+    'sobre.visao.p':'Nossa visão é ser referência na mobilidade aérea compartilhada no Brasil, conectada à produção nacional e aos mais altos padrões internacionais.',
+    'sobre.visao.p2':'Voar com qualidade, segurança e inteligência deve ser uma realidade para quem valoriza o tempo e a excelência.',
+    'sobre.diamond.eyebrow':'Parceria com a Diamond Aircraft','sobre.diamond.title':'O único programa vinculado ao fabricante',
+    'sobre.diamond.p':'A frota da VOWE é composta por aeronaves Diamond Aircraft DA62, modelo líder mundial de mercado e referência em segurança, tecnologia, eficiência e sustentabilidade.',
+    'sobre.diamond.p2':'A Diamond Aircraft possui o menor índice de acidentes do mercado, segundo a NTSB. A VOWE é o único programa de mobilidade aérea compartilhada no país com vínculo direto ao fabricante.',
+    'sobre.seg.eyebrow':'Segurança & Operação','sobre.seg.title':'Excelência em cada missão',
+    'sobre.seg.p1':'Treinamento de equipes: Toda a operação é conduzida por profissionais altamente qualificados, seguindo protocolos internacionais de segurança.',
+    'sobre.seg.p2':'Manutenção dedicada: Respaldo técnico da Aeromot, centro autorizado da Diamond Aircraft no Brasil. Inspeções rigorosas e disponibilidade técnica constante.',
+    'sobre.sust.eyebrow':'Sustentabilidade','sobre.sust.title':'Voar consciente é possível',
+    'sobre.sust.p':'Operamos com aeronaves Diamond DA62 que consomem até 60% menos combustível e emitem significativamente menos CO₂.',
+    'sobre.sust.p2':'Mais eficiência, menos impacto — alinhado aos princípios da descarbonização.',
+    'sobre.sust.b1':'Combustível JET A-1 de alta eficiência','sobre.sust.b2':'Emissão de CO₂ drasticamente reduzida','sobre.sust.b3':'Alinhado aos princípios de descarbonização',
+  },
+  en:{
+    'nav.home':'Home','nav.sobre':'About','nav.programas':'Programs','nav.frota':'Fleet','nav.contato':'Contact','nav.cta':'Become a Member',
+    'hero.eyebrow':'Premium Executive Aviation',
+    'hero.h1':'A <em>new way</em><br/>to fly.',
+    'hero.sub':'Exclusive Diamond DA62 fleet, app-integrated operations, and total freedom of choice — subscription, package, or on-demand.',
+    'hero.cta1':'Become a Member','hero.cta2':'View Programs',
+    'hero.stat1':'Aerodromes','hero.stat2':'Exclusive Fleet','hero.stat3':'Less fuel',
+    'home.dif.eyebrow':'Why VOWE','home.dif.title':'Differentials that <em>transform</em> your experience',
+    'home.dif.lead':'VOWE was built on real pillars of innovation, safety and practicality — not empty promises.',
+    'dif1.t':'Diamond DA62 Fleet','dif1.d':'World-leading aircraft in safety, technology and sustainability — tied directly to the manufacturer.',
+    'dif2.t':'Total Privacy','dif2.d':'Private executive aviation terminals. Fly with whoever you want — partners, family, pets.',
+    'dif3.t':'100% via App','dif3.d':'Book flights, track operations and manage balance in real time through the VOWE app.',
+    'dif4.t':'Cost Predictability','dif4.d':'All fixed and variable costs are known in advance. No surprises, no fluctuations.',
+    'dif5.t':'RBAC 135 Safety','dif5.d':'All operations ANAC-certified. Manufacturer-trained team and lowest accident rate in category.',
+    'dif6.t':'Real Sustainability','dif6.d':'Up to 60% less fuel and drastically reduced CO₂ emissions compared to conventional aviation.',
+    'dif7.t':'National Coverage','dif7.d':'Access to over 3,600 aerodromes in Brazil — including destinations without commercial routes.',
+    'dif8.t':'Liquid Title','dif8.d':'The VOWE use title is transferable, negotiable and convertible into flight hours or Diamond aircraft.',
+    'dif9.t':'No Bureaucracy','dif9.d':'No queues, cancellations or delays. VOWE is simple, uncomplicated and efficient by design.',
+    'home.prog.eyebrow':'Our Programs','home.prog.title':'Choose <em>how</em> you want to fly',
+    'prog1.title':'VOWE Membership','prog1.desc':'For frequent flyers seeking maximum predictability. Equity usage title with annual quotas and priority fleet access.',
+    'prog1.f1':'Packages of 60h, 120h or 180h/year','prog1.f2':'Maximum scheduling priority','prog1.f3':'Liquid and transferable usage title','prog1.f4':'Most advantageous rate in the program',
+    'prog2.title':'VOWE Fly Pass','prog2.desc':'Ideal for frequent clients seeking flexibility and control. Prepaid hours package with optimized rates.',
+    'prog2.f1':'Packages from 20h/year','prog2.f2':'Priority in Fly Now schedule','prog2.f3':'More advantageous cost per hour','prog2.f4':'No long-term contractual ties',
+    'prog3.title':'VOWE Fly Now','prog3.desc':'Individual on-demand flights. Perfect for occasional flyers or those needing an immediate solution without monthly fees.',
+    'prog3.f1':'Direct booking through app','prog3.f2':'Pay only when you fly','prog3.f3':'No monthly fees or contracts','prog3.f4':'Subject to schedule availability',
+    'prog.saibamais':'Learn more →',
+    'home.pq.eyebrow':'Member Profiles','home.pq.title':'Who is <em>VOWE for?</em>',
+    'home.pq.lead':'VOWE serves different profiles who value time, privacy and efficiency in travel.',
+    'pq1':'Wants private aviation without managing pilots, maintenance or hangars',
+    'pq2':'Travels via commercial aviation and seeks more privacy, security and agility',
+    'pq3':'Covers long distances facing Brazilian roads',
+    'pq4':'Wants to experience private aviation before purchasing their own aircraft',
+    'pq5':'Needs access to remote locations without regular air service',
+    'pq6':'Owns a company and seeks customized air mobility solutions',
+    'pq7':'Is an aircraft owner looking to reduce costs by flying less',
+    'pq8':'Seeks a more sustainable way to enjoy executive aviation',
+    'home.app.eyebrow':'VOWE App','home.app.title':'Your fleet in your <em>pocket</em>',
+    'home.app.lead':'Request flights, track real-time operations, manage hour balance and control your entire journey with agility and autonomy.',
+    'app.download':'Download on','app.download2':'Get it on',
+    'app.mock.book':'BOOK FLIGHT','app.mock.history':'HISTORY',
+    'app.mock.nav2':'Flights','app.mock.nav3':'Balance','app.mock.nav4':'Profile',
+    'home.cta.eyebrow':'Waitlist','home.cta.title':'Become a <em>VOWE</em> Member',
+    'home.cta.lead':'Spots are limited and admission happens according to operational availability. Secure your place in line.',
+    'home.cta.btn1':'Secure Your Spot','home.cta.btn2':'Talk to Our Sales Team',
+    'newsletter.title':'VOWE Newsletter','newsletter.btn':'Subscribe',
+    'newsletter.desc':'News about air mobility, program updates, exclusive benefits and behind-the-scenes.',
+    'newsletter.name':'Your name',
+    'newsletter.placeholder':'your@email.com',
+    'sobre.eyebrow':'Who we are','sobre.title':'About <em>VOWE</em> Air Mobility',
+    'sobre.lead':'At VOWE, we believe time is the most precious asset. Our mission is to transform air mobility into a light, safe and efficient experience.',
+    'sobre.num1':'DA62 aircraft planned','sobre.num2':'Operating Bases','sobre.num3':'Tied to Factory',
+    'sobre.cta':'Explore VOWE Programs',
+    'programas.eyebrow':'Customized Solutions','programas.title':'VOWE <em>Programs</em>',
+    'programas.lead':'Complete solutions for all air mobility needs — from one-off flights to the exclusive flight club.',
+    'ptab.membership':'Membership','ptab.flypass':'Fly Pass','ptab.flynow':'Fly Now','ptab.comp':'Comparison',
+    'mem.eyebrow':'Premium Program','mem.title':'VOWE <em>Membership</em>',
+    'mem.p1':'VOWE Membership is an exclusive air mobility program for those seeking predictability, flexibility and operational excellence in every flight.',
+    'mem.p2':'With Membership, flying becomes a continuous, integrated and personalized experience.',
+    'mem.b1':'Guaranteed fleet access at origin cell','mem.b2':'Scheduling priority and exclusive service',
+    'mem.b3':'Complete operational management — maintenance, insurance, crew','mem.b4':'Right to resell the title per statute','mem.b5':'100% management via VOWE app',
+    'horas.unit':'hours per year',
+    'hora1.desc':'Ideal for occasional flyers or those just starting in air mobility.',
+    'hora2.desc':'For frequent users seeking more flexibility and autonomy.',
+    'hora3.desc':'For high-frequency flyers requiring maximum operational autonomy.',
+    'mem.note':'All packages have a 12-month validity and can be adjusted according to each client\'s needs.',
+    'mem.cta1':'Become a Member','mem.cta2':'Talk to Sales Team',
+    'fp.eyebrow':'Flexibility & Control','fp.title':'VOWE <em>Fly Pass</em>',
+    'fp.p1':'VOWE Fly Pass was developed for frequent clients who value practicality, flexibility and predictability in air mobility.',
+    'fp.p2':'The ideal choice for those wanting to elevate their executive aviation experience with efficiency, planning and tailored management.',
+    'fp.b1':'Packages from 20h/year','fp.b2':'More advantageous cost per hour vs. one-off',
+    'fp.b3':'Priority in Fly Now schedule','fp.b4':'Priority queue for upgrade to Membership',
+    'fp.card.eyebrow':'Fly Pass Benefit','fp.card.desc':'Packages from 20 annual hours with optimized rates and full management via app.',
+    'fp.cta':'Request Quote',
+    'fn.eyebrow':'On Demand','fn.title':'VOWE <em>Fly Now</em>',
+    'fn.p1':'VOWE Fly Now is the ideal entry point for those wanting executive aviation with total freedom, no contractual ties.',
+    'fn.p2':'Book individual flights directly through the app or with support from the exclusive service center.',
+    'fn.apps.title':'Common applications',
+    'fn.a1':'Last-minute trips for strategic meetings','fn.a2':'Quick returns after professional commitments',
+    'fn.a3':'Travel between logistics and industrial hubs','fn.a4':'Access to locations without regular air service',
+    'fn.a5':'Alternative for those who won\'t compromise on comfort',
+    'fn.card.eyebrow':'How it works','fn.step1.t':'Check availability','fn.step1.d':'Open the app and check available aircraft for your route',
+    'fn.step2.t':'Choose your route','fn.step2.d':'Select origin, destination, date and number of passengers',
+    'fn.step3.t':'Confirm and fly','fn.step3.d':'Prepay via app and take off without queues or bureaucracy',
+    'fn.cta':'Request Quote Now',
+    'comp.eyebrow':'Comparative Analysis','comp.title':'Membership vs. <em>other options</em>',
+    'comp.lead':'600km trip, 4 passengers, 4-day advance — real comparison between executive transport modes.',
+    'comp.cat':'Category','comp.membership':'Membership','comp.suv':'Luxury SUV','comp.comercial':'Commercial Aviation','comp.propria':'Own Aircraft','comp.taxi':'Air Taxi',
+    'comp.r1':'Time (600km)','comp.r2':'Trip cost','comp.r3':'Monthly fixed cost','comp.r4':'Title without depreciation',
+    'comp.r5':'Pilot included','comp.r6':'Guaranteed availability','comp.r7':'Free route choice','comp.r8':'Cost management included',
+    'comp.r9':'Maintenance included','comp.r10':'Privacy','comp.r11':'Pet Friendly',
+    'frota.eyebrow':'Our Fleet','frota.title':'Diamond <em>DA62</em>',
+    'frota.lead':'The ideal balance between performance, sophistication, safety and sustainability. The world leader in its category.',
+    'spec1.l':'Seats','spec1.u':'passengers','spec2.l':'Consumption 60%','spec3.l':'Payload','spec4.l':'Speed','spec5.l':'Range','spec6.l':'Fuel','spec6.u':'high efficiency',
+    'frota.rev.eyebrow':'Revolutionary','frota.rev.title':'The Luxury SUV of the Skies',
+    'frota.rev.p1':'The Diamond DA62 is more than an airplane — it\'s the ideal balance between performance and sophistication. Accommodates up to 7 occupants with comfort typical of executive aviation.',
+    'frota.rev.p2':'Silent cabin, excellent visibility and cutting-edge onboard technology — providing a light and safe journey from start to finish.',
+    'frota.rev.p3':'Diamond emits much less CO₂ and consumes up to 60% less fuel compared to competitors.',
+    'frota.seg.eyebrow':'Safety','frota.seg.title':'Absolute reference in the sector',
+    'frota.seg.p1':'Diamond Aircraft has the lowest accident rate in the market, according to NTSB. Pioneer in using survival cell cabins based on F1 technology.',
+    'frota.seg.p2':'The only small aircraft manufacturer to conduct crash tests on the entire structure — with models that withstand up to 26G of impact.',
+    'frota.seg.b1':'Lowest accident rate in category (NTSB)','frota.seg.b2':'Two high-efficiency JET A-1 engines',
+    'frota.seg.b3':'Designed for landings on short runways','frota.seg.b4':'Structural resistance up to 26G impact',
+    'frota.av.eyebrow':'Avionics','frota.av.title':'Garmin G1000NXi — <em>cutting-edge technology</em>',
+    'frota.av.lead':'Glasscockpit with technological features similar to large passenger aircraft.',
+    'frota.av1':'Complete glasscockpit standard, with features equivalent to large passenger aviation.',
+    'frota.av2':'Three-axis autopilot with Garmin Yaw Damper as standard.',
+    'frota.av3':'Optional Garmin GWX70 and StormScope WX500 for maximum safety in adverse conditions.',
+    'frota.av4':'Facilitates loading of flight plans directly into the aircraft.',
+    'frota.dep.eyebrow':'Testimonials','frota.dep.title':'What <em>pilots</em> say',
+    'test1.q':'"Regarding safety, it\'s an aircraft that needs no comments — the technology with the GARMIN screens is absolutely unmatched."',
+    'test2.q':'"The structure is very strong and the landing gear is very strong. The resistance is fabulous and the operating cost is very low."',
+    'test.role':'Commercial Pilot',
+    'contato.eyebrow':'Get in Touch','contato.title':'<em>Contact</em> VOWE',
+    'contato.lead':'Tell us your travel needs and our team will present a customized solution.',
+    'contato.app.eyebrow':'VOWE App','contato.app.desc':'Available for iOS and Android. Download now and make your free pre-booking.',
+    'contato.form.title':'Send a message',
+    'form.nome':'Name','form.nome.ph':'Your full name',
+    'form.empresa':'Company','form.empresa.ph':'Company name',
+    'form.email':'Email','form.email.ph':'your@email.com',
+    'form.tel':'Phone','form.tel.ph':'+1 (555) 000-0000',
+    'form.interesse':'Interest','form.sel':'Select...','form.opt1':'VOWE Membership','form.opt2':'VOWE Fly Pass','form.opt3':'VOWE Fly Now','form.opt4':'Other subject',
+    'form.msg':'Message','form.msg.ph':'Tell us your travel needs...','form.send':'Send via WhatsApp',
+    'footer.desc':'Intelligent air mobility. Exclusive Diamond DA62 fleet, app-based operations and total freedom to fly your way.',
+    'footer.nav':'Navigation','footer.programs':'Programs','footer.contact':'Contact',
+    'footer.waitlist':'Waitlist','footer.privacy':'Privacy','footer.anac':'AOC No. 2021-09-00IC-01-01/ANAC',
+    'footer.rights':'All rights reserved.',
+    'footer.disclaimer':'The information presented reflects current conditions and may be updated periodically by VOWE without prior notice.',
+    'sobre.visao.eyebrow':'Future Vision','sobre.visao.title':'Reference in shared air mobility in Brazil',
+    'sobre.visao.p':'Our vision is to be the reference in shared air mobility in Brazil, connected to national production and the highest international standards.',
+    'sobre.visao.p2':'Flying with quality, safety and intelligence should be a reality for those who value time and excellence.',
+    'sobre.diamond.eyebrow':'Partnership with Diamond Aircraft','sobre.diamond.title':'The only program tied to the manufacturer',
+    'sobre.diamond.p':'VOWE\'s fleet consists of Diamond Aircraft DA62, world market leader and reference in safety, technology, efficiency and sustainability.',
+    'sobre.diamond.p2':'Diamond Aircraft has the lowest accident rate in the market per NTSB. VOWE is the only shared air mobility program in Brazil with a direct manufacturer link.',
+    'sobre.seg.eyebrow':'Safety & Operations','sobre.seg.title':'Excellence in every mission',
+    'sobre.seg.p1':'Team training: All operations are conducted by highly qualified professionals following international safety protocols.',
+    'sobre.seg.p2':'Dedicated maintenance: Technical support from Aeromot, Diamond Aircraft\'s authorized center in Brazil. Rigorous inspections and constant technical availability.',
+    'sobre.sust.eyebrow':'Sustainability','sobre.sust.title':'Conscious flying is possible',
+    'sobre.sust.p':'We operate Diamond DA62 aircraft that consume up to 60% less fuel and emit significantly less CO₂.',
+    'sobre.sust.p2':'More efficiency, less impact — aligned with decarbonization principles.',
+    'sobre.sust.b1':'JET A-1 high efficiency fuel','sobre.sust.b2':'Drastically reduced CO₂ emissions','sobre.sust.b3':'Aligned with decarbonization principles',
+  },
+  es:{
+    'nav.home':'Inicio','nav.sobre':'Nosotros','nav.programas':'Programas','nav.frota':'Flota','nav.contato':'Contacto','nav.cta':'Ser Miembro',
+    'hero.eyebrow':'Aviación Ejecutiva Premium',
+    'hero.h1':'Una <em>nueva forma</em><br/>de volar.',
+    'hero.sub':'Flota exclusiva Diamond DA62, operación integrada vía app y total libertad de elección — suscripción, paquete o vuelo individual.',
+    'hero.cta1':'Ser Miembro','hero.cta2':'Ver Programas',
+    'hero.stat1':'Aeródromos','hero.stat2':'Flota exclusiva','hero.stat3':'Menos combustible',
+    'home.dif.eyebrow':'Por qué VOWE','home.dif.title':'Diferenciales que <em>transforman</em> tu experiencia',
+    'home.dif.lead':'VOWE fue construida sobre pilares reales de innovación, seguridad y practicidad — no promesas vacías.',
+    'dif1.t':'Flota Diamond DA62','dif1.d':'Aeronaves líderes mundiales en seguridad, tecnología y sostenibilidad — vinculadas al fabricante.',
+    'dif2.t':'Privacidad Total','dif2.d':'Terminales privados de aviación ejecutiva. Vuela con quien quieras — socios, familia, mascotas.',
+    'dif3.t':'100% vía App','dif3.d':'Agenda vuelos, sigue operaciones y gestiona saldo en tiempo real por la app VOWE.',
+    'dif4.t':'Previsibilidad de Costos','dif4.d':'Todos los costos fijos y variables son conocidos de antemano. Sin sorpresas ni fluctuaciones.',
+    'dif5.t':'Seguridad RBAC 135','dif5.d':'Toda operación certificada por ANAC. Equipo capacitado por el fabricante y menor índice de accidentes.',
+    'dif6.t':'Sostenibilidad Real','dif6.d':'Hasta 60% menos combustible y emisiones de CO₂ drásticamente reducidas.',
+    'dif7.t':'Cobertura Nacional','dif7.d':'Acceso a más de 3.600 aeródromos en Brasil — incluidos destinos sin redes comerciales.',
+    'dif8.t':'Título Liquidable','dif8.d':'El título de uso VOWE es transferible, negociable y convertible en horas o aeronaves Diamond.',
+    'dif9.t':'Sin Burocracia','dif9.d':'Sin filas, cancelaciones ni retrasos. VOWE es simple, sin complicaciones y eficiente por diseño.',
+    'home.prog.eyebrow':'Nuestros Programas','home.prog.title':'Elige <em>cómo</em> quieres volar',
+    'prog1.title':'VOWE Membership','prog1.desc':'Para quienes vuelan con frecuencia y buscan máxima previsibilidad. Título patrimonial de uso con cuotas anuales.',
+    'prog1.f1':'Paquetes de 60h, 120h o 180h/año','prog1.f2':'Máxima prioridad de agenda','prog1.f3':'Título de uso liquidable y transferible','prog1.f4':'Tarifa más ventajosa del programa',
+    'prog2.title':'VOWE Fly Pass','prog2.desc':'Ideal para clientes frecuentes que buscan flexibilidad y control. Paquete prepago de horas con tarifa optimizada.',
+    'prog2.f1':'Paquetes desde 20h/año','prog2.f2':'Prioridad en agenda Fly Now','prog2.f3':'Costo por hora más ventajoso','prog2.f4':'Sin vínculo contractual a largo plazo',
+    'prog3.title':'VOWE Fly Now','prog3.desc':'Vuelos individuales bajo demanda. Perfecto para quienes vuelan ocasionalmente sin mensualidades.',
+    'prog3.f1':'Contratación directa por app','prog3.f2':'Pago solo al volar','prog3.f3':'Sin mensualidades ni contratos','prog3.f4':'Sujeto a disponibilidad de agenda',
+    'prog.saibamais':'Saber más →',
+    'home.pq.eyebrow':'Perfil de Miembros','home.pq.title':'¿Para quién es <em>VOWE?</em>',
+    'home.pq.lead':'VOWE atiende diferentes perfiles que valoran tiempo, privacidad y eficiencia en los desplazamientos.',
+    'pq1':'Desea aviación privada sin gestión de pilotos, mantenimiento o hangares',
+    'pq2':'Viaja por aviación comercial y busca más privacidad, seguridad y agilidad',
+    'pq3':'Recorre largas distancias enfrentando las carreteras brasileñas',
+    'pq4':'Quiere experimentar aviación privada antes de adquirir aeronave propia',
+    'pq5':'Necesita acceder a localidades remotas sin red aérea regular',
+    'pq6':'Tiene empresa y busca soluciones de movilidad aérea personalizada',
+    'pq7':'Es propietario de aeronave y quiere reducir costos volando menos',
+    'pq8':'Busca una forma más sostenible de disfrutar la aviación ejecutiva',
+    'home.app.eyebrow':'App VOWE','home.app.title':'Tu flota en tu <em>bolsillo</em>',
+    'home.app.lead':'Solicita vuelos, sigue operaciones en tiempo real y gestiona tu saldo de horas con agilidad y autonomía.',
+    'app.download':'Descargar en','app.download2':'Disponible en',
+    'app.mock.book':'RESERVAR VUELO','app.mock.history':'HISTORIAL',
+    'app.mock.nav2':'Vuelos','app.mock.nav3':'Saldo','app.mock.nav4':'Perfil',
+    'home.cta.eyebrow':'Lista de Espera','home.cta.title':'Sé miembro <em>VOWE</em>',
+    'home.cta.lead':'Los cupos son limitados y la adhesión ocurre según la disponibilidad operacional. Asegura tu lugar en la lista.',
+    'home.cta.btn1':'Asegurar Lugar','home.cta.btn2':'Hablar con Equipo Comercial',
+    'newsletter.title':'Newsletter VOWE','newsletter.btn':'Suscribirse',
+    'newsletter.desc':'Novedades sobre movilidad aérea, actualizaciones del programa y beneficios exclusivos.',
+    'newsletter.name':'Tu nombre',
+    'newsletter.placeholder':'tu@email.com',
+    'sobre.eyebrow':'Quiénes somos','sobre.title':'Sobre <em>VOWE</em> Air Mobility',
+    'sobre.lead':'En VOWE, creemos que el tiempo es el bien más precioso. Nuestra misión es transformar la movilidad aérea en una experiencia ligera, segura y eficiente.',
+    'sobre.num1':'Aeronaves DA62 previstas','sobre.num2':'Bases Operacionales','sobre.num3':'Vinculada a la Fábrica',
+    'sobre.cta':'Conocer los Programas VOWE',
+    'programas.eyebrow':'Soluciones Personalizadas','programas.title':'Programas <em>VOWE</em>',
+    'programas.lead':'Soluciones completas para todas las necesidades de movilidad aérea.',
+    'ptab.membership':'Membership','ptab.flypass':'Fly Pass','ptab.flynow':'Fly Now','ptab.comp':'Comparativo',
+    'mem.eyebrow':'Programa Premium','mem.title':'VOWE <em>Membership</em>',
+    'mem.p1':'VOWE Membership es un programa exclusivo de movilidad aérea para quienes buscan previsibilidad, flexibilidad y excelencia operacional en cada vuelo.',
+    'mem.p2':'Con el Membership, volar deja de ser una operación puntual para convertirse en una experiencia continua, integrada y personalizada.',
+    'mem.b1':'Acceso garantizado a la flota en la célula de origen','mem.b2':'Prioridad de agenda y atención exclusiva',
+    'mem.b3':'Gestión operacional completa — mantenimiento, seguros, tripulación','mem.b4':'Derecho de reventa del título conforme estatuto','mem.b5':'Gestión 100% vía app VOWE',
+    'horas.unit':'horas por año',
+    'hora1.desc':'Ideal para quienes vuelan ocasionalmente o están comenzando en la movilidad aérea.',
+    'hora2.desc':'Para usuarios frecuentes que buscan más flexibilidad y autonomía.',
+    'hora3.desc':'Para quienes vuelan con alta frecuencia y exigen máxima autonomía operacional.',
+    'mem.note':'Todos los paquetes tienen vigencia de 12 meses y pueden ajustarse según las necesidades de cada cliente.',
+    'mem.cta1':'Ser Miembro','mem.cta2':'Hablar con Equipo Comercial',
+    'fp.eyebrow':'Flexibilidad y Control','fp.title':'VOWE <em>Fly Pass</em>',
+    'fp.p1':'VOWE Fly Pass fue desarrollado para clientes frecuentes que valoran practicidad, flexibilidad y previsibilidad en la movilidad aérea.',
+    'fp.p2':'La elección ideal para quienes desean elevar su experiencia en aviación ejecutiva con eficiencia y planificación.',
+    'fp.b1':'Paquetes desde 20h/año','fp.b2':'Costo por hora más ventajoso vs. individual',
+    'fp.b3':'Prioridad en agenda Fly Now','fp.b4':'Cola preferencial para upgrade a Membership',
+    'fp.card.eyebrow':'Beneficio Fly Pass','fp.card.desc':'Paquetes desde 20 horas anuales con tarifa optimizada y gestión total vía app.',
+    'fp.cta':'Solicitar Cotización',
+    'fn.eyebrow':'Bajo Demanda','fn.title':'VOWE <em>Fly Now</em>',
+    'fn.p1':'VOWE Fly Now es el punto de entrada ideal para quienes desean disfrutar la aviación ejecutiva con total libertad, sin vínculo contractual.',
+    'fn.p2':'Contrata vuelos individuales directamente por la app o con apoyo del centro exclusivo de atención.',
+    'fn.apps.title':'Aplicaciones comunes',
+    'fn.a1':'Viajes de última hora para reuniones estratégicas','fn.a2':'Retornos rápidos tras compromisos profesionales',
+    'fn.a3':'Desplazamientos entre polos logísticos e industriales','fn.a4':'Acceso a localidades sin red aérea regular',
+    'fn.a5':'Alternativa para quienes no renuncian al confort',
+    'fn.card.eyebrow':'Cómo funciona','fn.step1.t':'Consulta disponibilidad','fn.step1.d':'Accede a la app y verifica aeronaves disponibles para tu ruta',
+    'fn.step2.t':'Elige tu ruta','fn.step2.d':'Selecciona origen, destino, fecha y número de pasajeros',
+    'fn.step3.t':'Confirma y vuela','fn.step3.d':'Pago anticipado vía app y despegue sin filas ni burocracia',
+    'fn.cta':'Solicitar Cotización Ahora',
+    'comp.eyebrow':'Análisis Comparativo','comp.title':'Membership vs. <em>otras opciones</em>',
+    'comp.lead':'Viaje de 600km, 4 pasajeros, 4 días de anticipación — comparación real entre medios ejecutivos.',
+    'comp.cat':'Categoría','comp.membership':'Membership','comp.suv':'SUV de Lujo','comp.comercial':'Aviación Comercial','comp.propria':'Aeronave Propia','comp.taxi':'Taxi Aéreo',
+    'comp.r1':'Tiempo (600km)','comp.r2':'Costo del trayecto','comp.r3':'Costo fijo mensual','comp.r4':'Título sin depreciación',
+    'comp.r5':'Piloto incluido','comp.r6':'Disponibilidad garantizada','comp.r7':'Libre elección de rutas','comp.r8':'Gestión de costos incluida',
+    'comp.r9':'Mantenimiento incluido','comp.r10':'Privacidad','comp.r11':'Pet Friendly',
+    'frota.eyebrow':'Nuestra Flota','frota.title':'Diamond <em>DA62</em>',
+    'frota.lead':'El equilibrio ideal entre performance, sofisticación, seguridad y sostenibilidad. El líder mundial de su categoría.',
+    'spec1.l':'Asientos','spec1.u':'pasajeros','spec2.l':'Consumo 60%','spec3.l':'Carga Útil','spec4.l':'Velocidad','spec5.l':'Alcance','spec6.l':'Combustible','spec6.u':'alta eficiencia',
+    'frota.rev.eyebrow':'Revolucionario','frota.rev.title':'El SUV de Lujo de los Cielos',
+    'frota.rev.p1':'El Diamond DA62 es más que un avión — es el equilibrio ideal entre performance y sofisticación. Acomoda hasta 7 ocupantes con confort típico de la aviación ejecutiva.',
+    'frota.rev.p2':'Cabina silenciosa, excelente visibilidad y tecnología embarcada de punta — proporcionando un viaje ligero y seguro.',
+    'frota.rev.p3':'Diamond emite mucho menos CO₂ y consume hasta un 60% menos combustible que sus competidores.',
+    'frota.seg.eyebrow':'Seguridad','frota.seg.title':'Referencia absoluta en el sector',
+    'frota.seg.p1':'Diamond Aircraft tiene el menor índice de accidentes del mercado según la NTSB. Pionera en cabinas de supervivencia basadas en tecnología F1.',
+    'frota.seg.p2':'El único fabricante de aeronaves pequeñas en realizar crash test en toda la estructura — modelos que resisten hasta 26G de impacto.',
+    'frota.seg.b1':'Menor índice de accidentes de la categoría (NTSB)','frota.seg.b2':'Dos motores JET A-1 de alta eficiencia',
+    'frota.seg.b3':'Diseñado para aterrizajes en pistas cortas','frota.seg.b4':'Resistencia estructural hasta 26G de impacto',
+    'frota.av.eyebrow':'Aviónica','frota.av.title':'Garmin G1000NXi — <em>tecnología de punta</em>',
+    'frota.av.lead':'Glasscockpit con recursos tecnológicos similares a los de grandes aeronaves de pasajeros.',
+    'frota.av1':'Glasscockpit completo de serie, con características equivalentes a la aviación de grandes pasajeros.',
+    'frota.av2':'Piloto automático de tres ejes con Yaw Damper Garmin de serie.',
+    'frota.av3':'Garmin GWX70 y StormScope WX500 opcionales para máxima seguridad en condiciones adversas.',
+    'frota.av4':'Facilita la carga de planes de vuelo directamente en la aeronave.',
+    'frota.dep.eyebrow':'Testimonios','frota.dep.title':'Lo que dicen los <em>pilotos</em>',
+    'test1.q':'"En cuanto a seguridad, es una aeronave que no necesita comentarios — la tecnología con las pantallas GARMIN es absolutamente incomparable."',
+    'test2.q':'"La estructura es muy fuerte y el tren de aterrizaje es muy resistente. La resistencia es fabulosa y el costo operativo es muy bajo."',
+    'test.role':'Piloto Comercial',
+    'contato.eyebrow':'Contáctanos','contato.title':'<em>Contacto</em> VOWE',
+    'contato.lead':'Cuéntanos tu necesidad de viaje y nuestro equipo presentará una solución personalizada.',
+    'contato.app.eyebrow':'App VOWE','contato.app.desc':'Disponible para iOS y Android. Descarga ahora y realiza tu pre-reserva sin costo.',
+    'contato.form.title':'Envía un mensaje',
+    'form.nome':'Nombre','form.nome.ph':'Tu nombre completo',
+    'form.empresa':'Empresa','form.empresa.ph':'Nombre de la empresa',
+    'form.email':'Email','form.email.ph':'tu@email.com',
+    'form.tel':'Teléfono','form.tel.ph':'+1 (555) 000-0000',
+    'form.interesse':'Interés','form.sel':'Seleccionar...','form.opt1':'VOWE Membership','form.opt2':'VOWE Fly Pass','form.opt3':'VOWE Fly Now','form.opt4':'Otro asunto',
+    'form.msg':'Mensaje','form.msg.ph':'Cuéntanos tu necesidad de viaje...','form.send':'Enviar por WhatsApp',
+    'footer.desc':'Movilidad aérea inteligente. Flota exclusiva Diamond DA62, operación vía app y total libertad para volar a tu manera.',
+    'footer.nav':'Navegación','footer.programs':'Programas','footer.contact':'Contacto',
+    'footer.waitlist':'Lista de Espera','footer.privacy':'Privacidad','footer.anac':'COA Nº 2021-09-00IC-01-01/ANAC',
+    'footer.rights':'Todos los derechos reservados.',
+    'footer.disclaimer':'La información presentada refleja las condiciones vigentes y puede ser actualizada periódicamente por VOWE sin previo aviso.',
+    'sobre.visao.eyebrow':'Visión de Futuro','sobre.visao.title':'Referencia en movilidad aérea compartida en Brasil',
+    'sobre.visao.p':'Nuestra visión es ser la referencia en movilidad aérea compartida en Brasil, conectada a la producción nacional y a los más altos estándares internacionales.',
+    'sobre.visao.p2':'Volar con calidad, seguridad e inteligencia debe ser una realidad para quienes valoran el tiempo y la excelencia.',
+    'sobre.diamond.eyebrow':'Alianza con Diamond Aircraft','sobre.diamond.title':'El único programa vinculado al fabricante',
+    'sobre.diamond.p':'La flota VOWE está compuesta por aeronaves Diamond Aircraft DA62, líder mundial del mercado y referencia en seguridad, tecnología, eficiencia y sostenibilidad.',
+    'sobre.diamond.p2':'Diamond Aircraft tiene el menor índice de accidentes del mercado según la NTSB. VOWE es el único programa de movilidad aérea compartida en Brasil con vínculo directo al fabricante.',
+    'sobre.seg.eyebrow':'Seguridad y Operación','sobre.seg.title':'Excelencia en cada misión',
+    'sobre.seg.p1':'Capacitación de equipos: Toda la operación es conducida por profesionales altamente calificados siguiendo protocolos internacionales de seguridad.',
+    'sobre.seg.p2':'Mantenimiento dedicado: Soporte técnico de Aeromot, centro autorizado de Diamond Aircraft en Brasil. Inspecciones rigurosas y disponibilidad técnica constante.',
+    'sobre.sust.eyebrow':'Sostenibilidad','sobre.sust.title':'Volar consciente es posible',
+    'sobre.sust.p':'Operamos con aeronaves Diamond DA62 que consumen hasta 60% menos combustible y emiten significativamente menos CO₂.',
+    'sobre.sust.p2':'Más eficiencia, menos impacto — alineado con los principios de descarbonización.',
+    'sobre.sust.b1':'Combustible JET A-1 de alta eficiencia','sobre.sust.b2':'Emisiones de CO₂ drásticamente reducidas','sobre.sust.b3':'Alineado con principios de descarbonización',
+  }
+};
+
+let currentLang = 'pt';
+let currentPage = 'home';
+
+function setLang(lang){
+  currentLang = lang;
+  ['pt','en','es'].forEach(l=>{
+    document.getElementById('btn-'+l)?.classList.toggle('active',l===lang);
+    document.getElementById('m-btn-'+l)?.classList.toggle('active',l===lang);
+  });
+  applyLang();
+}
+
+function applyLang(){
+  const t = LANGS[currentLang];
+  // text content
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-placeholder');
+    if(t[key] !== undefined) el.placeholder = t[key];
+  });
+  // update html lang
+  document.documentElement.lang = currentLang==='pt'?'pt-BR':currentLang;
+}
+
+// ─── NAVIGATION ─────────────────────────────
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  // nav active
+  document.querySelectorAll('nav a[data-page]').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('data-page')===page);
+  });
+  currentPage = page;
+  window.scrollTo({top:0,behavior:'instant'});
+  // inject footer on each page once
+  ensureFooter(page);
+}
+
+function ensureFooter(page){
+  const pid = 'page-'+page;
+  const pageEl = document.getElementById(pid);
+  if(!pageEl) return;
+  if(pageEl.querySelector('footer')) return;
+  const tpl = document.getElementById('footer-tpl');
+  const clone = tpl.content.cloneNode(true);
+  pageEl.appendChild(clone);
+  applyLang(); // re-translate footer
+}
+
+// ─── PROGRAMAS TABS ──────────────────────────
+function showProgTab(tab){
+  ['membership','flypass','flynow','comparativo'].forEach(t=>{
+    const el = document.getElementById('tab-'+t);
+    if(el) el.style.display = t===tab ? 'block':'none';
+  });
+  document.querySelectorAll('.prog-tab').forEach((btn,i)=>{
+    const tabs=['membership','flypass','flynow','comparativo'];
+    btn.classList.toggle('active', tabs[i]===tab);
+  });
+}
+
+// ─── TOPBAR SCROLL ───────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('topbar').classList.toggle('scrolled', window.scrollY>40);
+},{ passive:true });
+
+// ─── HAMBURGER ───────────────────────────────
+function toggleMenu(){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobile-menu');
+  h.classList.toggle('open');
+  m.classList.toggle('open');
+}
+
+// ─── WHATSAPP FORM ───────────────────────────
+function sendWhatsapp(){
+  const nome = document.querySelector('[data-i18n="form.nome"]')?.nextElementSibling?.value || '';
+  const interesse = document.querySelectorAll('[data-i18n="form.interesse"]')[0]?.nextElementSibling?.value || '';
+  const msg = encodeURIComponent(`Olá! Me chamo ${nome || '[nome]'} e tenho interesse em ${interesse || 'VOWE'}.`);
+  window.open(`https://api.whatsapp.com/send?phone=5531998342508&text=${msg}`, '_blank');
+}
+
+
+// ─── COUNTER ANIMATION ───────────────────────────────
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-count]').forEach(el=>{
+    const target = parseInt(el.getAttribute('data-count'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    const text   = el.getAttribute('data-text') || '';
+    if(text){ el.textContent = text; return; } // non-numeric like DA62
+    const duration = 1600;
+    const steps = 50;
+    const stepTime = duration / steps;
+    let current = 0;
+    el.textContent = '0' + suffix;
+    const timer = setInterval(()=>{
+      current += Math.ceil(target / steps);
+      if(current >= target){
+        current = target;
+        clearInterval(timer);
+      }
+      // format thousands with dot
+      const formatted = current >= 1000
+        ? current.toLocaleString('pt-BR')
+        : current.toString();
+      el.textContent = formatted + suffix;
+    }, stepTime);
+  });
+}
+
+// run when home page shown (or on load)
+const _origShow = window.showPage || null;
+document.addEventListener('DOMContentLoaded', ()=>{
+  // trigger on initial load if home
+  setTimeout(animateCounters, 400);
+});
+
+// re-trigger when navigating back to home
+const __origShowPage = showPage;
+function showPage(page){
+  __origShowPage(page);
+  if(page === 'home') setTimeout(animateCounters, 300);
+}
+
+// ─── INIT ────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  ensureFooter('home');
+  applyLang();
+});
+</script>
+</body>
+</html>
